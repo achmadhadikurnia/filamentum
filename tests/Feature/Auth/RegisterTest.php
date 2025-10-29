@@ -16,10 +16,8 @@ beforeEach(function () {
 // ------------------------------------------------------------------------------------------------
 
 it('displays registration page', function () {
-    // When: A guest visits the registration page
     $response = $this->get(route('filament.app.auth.register'));
 
-    // Then: They should see the registration form
     $response->assertStatus(200);
     $response->assertSee('Register');
     $response->assertSee('Name');
