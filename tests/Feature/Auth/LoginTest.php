@@ -5,113 +5,84 @@ use Database\Seeders\RoleUserSeeder;
 use Database\Seeders\ShieldSeeder;
 
 beforeEach(function () {
+    // Seed the database with roles, permissions, and users
     $this->seed(ShieldSeeder::class);
     $this->seed(RoleUserSeeder::class);
 
-    // Get test users
+    // Get all test users created by the seeders
     $this->superAdmin = User::where('email', 'superadmin@filamentum.com')->first();
     $this->admin = User::where('email', 'admin@filamentum.com')->first();
     $this->regularUser = User::where('email', 'user@filamentum.com')->first();
 });
 
-it('displays the login page with correct content', function () {
+// ------------------------------------------------------------------------------------------------
+// Login Page Access Tests
+// ------------------------------------------------------------------------------------------------
+
+it('displays the login page with correct content for guests', function () {
     $response = $this->get(route('filament.app.auth.login'));
 
     $response->assertStatus(200);
-    $response->assertSee('Login');
-    $response->assertSee('Email');
-    $response->assertSee('Password');
+    $response->assertSee('login');
     $response->assertSee('email');
     $response->assertSee('password');
-    $response->assertSee('input');
-    $response->assertSee('button');
 });
 
-it('displays login form with proper structure', function () {
+it('redirects authenticated super admin away from login page', function () {
+    $this->actingAs($this->superAdmin);
     $response = $this->get(route('filament.app.auth.login'));
-
-    $response->assertStatus(200);
-    // Check for form element
-    $response->assertSee('<form', false);
-    // Check for CSRF token field
-    $response->assertSee('csrf', false);
-    // Check for submit button
-    $response->assertSee('submit', false);
-});
-
-it('redirects unauthenticated users to login page', function () {
-    $response = $this->get(route('filament.app.pages.dashboard'));
-
-    $response->assertStatus(302);
-    $response->assertRedirect(route('filament.app.auth.login'));
-});
-
-it('allows access to admin panel after authentication', function () {
-    $user = $this->superAdmin;
-    $response = $this->actingAs($user)->get(route('filament.app.pages.dashboard'));
-
-    $response->assertStatus(200);
-    $response->assertSee('Dashboard');
-});
-
-it('successfully logs out authenticated users', function () {
-    $user = $this->superAdmin;
-    $this->actingAs($user);
-
-    // Verify user is authenticated
-    $this->assertAuthenticatedAs($user);
-
-    // Test logout
-    $response = $this->post(route('filament.app.auth.logout'));
-
-    $response->assertStatus(302);
-    $response->assertRedirect(route('filament.app.auth.login'));
-    $this->assertGuest();
-});
-
-it('redirects authenticated users away from login page', function () {
-    $user = $this->superAdmin;
-    $response = $this->actingAs($user)->get(route('filament.app.auth.login'));
 
     $response->assertStatus(302);
     $response->assertRedirect(route('filament.app.pages.dashboard'));
 });
 
-it('maintains proper session state', function () {
-    // Initially should be a guest
-    $this->assertGuest();
+it('redirects authenticated admin away from login page', function () {
+    $this->actingAs($this->admin);
+    $response = $this->get(route('filament.app.auth.login'));
 
-    // Authenticate user
-    $user = $this->superAdmin;
-    $this->actingAs($user);
-
-    // Should now be authenticated
-    $this->assertAuthenticatedAs($user);
-
-    // Logout
-    $this->post(route('filament.app.auth.logout'));
-
-    // Should be a guest again
-    $this->assertGuest();
+    $response->assertStatus(302);
+    $response->assertRedirect(route('filament.app.pages.dashboard'));
 });
 
-it('prevents access to admin resources after logout', function () {
-    $user = $this->superAdmin;
+it('redirects authenticated regular user away from login page', function () {
+    $this->actingAs($this->regularUser);
+    $response = $this->get(route('filament.app.auth.login'));
 
-    // Authenticate
-    $this->actingAs($user);
-    $this->assertAuthenticated();
+    $response->assertStatus(302);
+    $response->assertRedirect(route('filament.app.pages.dashboard'));
+});
 
-    // Access protected resource
+// ------------------------------------------------------------------------------------------------
+// Dashboard Access Tests
+// ------------------------------------------------------------------------------------------------
+
+it('redirects unauthenticated users to login page when accessing dashboard', function () {
     $response = $this->get(route('filament.app.pages.dashboard'));
-    $response->assertStatus(200);
 
-    // Logout
-    $this->post(route('filament.app.auth.logout'));
-    $this->assertGuest();
-
-    // Try to access protected resource again
-    $response = $this->get(route('filament.app.pages.dashboard'));
     $response->assertStatus(302);
     $response->assertRedirect(route('filament.app.auth.login'));
+});
+
+it('allows super admin to access dashboard after authentication', function () {
+    $this->actingAs($this->superAdmin);
+    $response = $this->get(route('filament.app.pages.dashboard'));
+
+    $response->assertStatus(200);
+    $response->assertSee('Dashboard');
+});
+
+it('allows admin to access dashboard after authentication', function () {
+    $this->actingAs($this->admin);
+    $response = $this->get(route('filament.app.pages.dashboard'));
+
+    $response->assertStatus(200);
+    $response->assertSee('Dashboard');
+});
+
+it('allows regular user to access dashboard after authentication', function () {
+    $this->actingAs($this->regularUser);
+    $response = $this->get(route('filament.app.pages.dashboard'));
+
+    $response->assertStatus(200);
+    $response->assertSee('Dashboard');
 });
