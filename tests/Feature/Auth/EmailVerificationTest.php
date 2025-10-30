@@ -81,7 +81,7 @@ it('sends email verification notification', function () {
 // Email Verification Process Tests
 // ------------------------------------------------------------------------------------------------
 
-it('can verify email with valid signature for superadmin', function () {
+it('can verify email with valid signature for super admin', function () {
     // Create an unverified user
     $user = User::factory()->create([
         'email_verified_at' => null,

@@ -19,7 +19,7 @@ beforeEach(function () {
 // Login Page Access Tests
 // ------------------------------------------------------------------------------------------------
 
-it('displays the login page with correct content for guests', function () {
+it('displays the login page for guests', function () {
     $response = $this->get(route('filament.app.auth.login'));
 
     $response->assertStatus(200);
@@ -85,4 +85,59 @@ it('allows regular user to access dashboard after authentication', function () {
 
     $response->assertStatus(200);
     $response->assertSee('Dashboard');
+});
+
+// ------------------------------------------------------------------------------------------------
+// Authentication State Tests
+// ------------------------------------------------------------------------------------------------
+
+it('redirects to login after super admin logs out', function () {
+    // Given: A user is logged in and can access their profile
+    $this->actingAs($this->superAdmin);
+    $dashboardResponse = $this->get(route('filament.app.pages.dashboard'));
+    $dashboardResponse->assertStatus(200);
+
+    // When: The user logs out
+    $logoutResponse = $this->post(route('filament.app.auth.logout'));
+    $logoutResponse->assertStatus(302);
+    $this->assertGuest();
+
+    // Then: The user is redirected to login when trying to access profile again
+    $redirectedDashboardResponse = $this->get(route('filament.app.pages.dashboard'));
+    $redirectedDashboardResponse->assertStatus(302);
+    $redirectedDashboardResponse->assertRedirect(route('filament.app.auth.login'));
+});
+
+it('redirects to login after admin logs out', function () {
+    // Given: A user is logged in and can access their profile
+    $this->actingAs($this->admin);
+    $dashboardResponse = $this->get(route('filament.app.pages.dashboard'));
+    $dashboardResponse->assertStatus(200);
+
+    // When: The user logs out
+    $logoutResponse = $this->post(route('filament.app.auth.logout'));
+    $logoutResponse->assertStatus(302);
+    $this->assertGuest();
+
+    // Then: The user is redirected to login when trying to access profile again
+    $redirectedDashboardResponse = $this->get(route('filament.app.pages.dashboard'));
+    $redirectedDashboardResponse->assertStatus(302);
+    $redirectedDashboardResponse->assertRedirect(route('filament.app.auth.login'));
+});
+
+it('redirects to login after regular user logs out', function () {
+    // Given: A user is logged in and can access their profile
+    $this->actingAs($this->regularUser);
+    $dashboardResponse = $this->get(route('filament.app.pages.dashboard'));
+    $dashboardResponse->assertStatus(200);
+
+    // When: The user logs out
+    $logoutResponse = $this->post(route('filament.app.auth.logout'));
+    $logoutResponse->assertStatus(302);
+    $this->assertGuest();
+
+    // Then: The user is redirected to login when trying to access profile again
+    $redirectedDashboardResponse = $this->get(route('filament.app.pages.dashboard'));
+    $redirectedDashboardResponse->assertStatus(302);
+    $redirectedDashboardResponse->assertRedirect(route('filament.app.auth.login'));
 });

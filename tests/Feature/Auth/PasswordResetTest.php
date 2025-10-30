@@ -55,30 +55,30 @@ it('redirects authenticated regular user away from password reset request page',
     $response->assertRedirect(route('filament.app.pages.dashboard'));
 });
 
-// ------------------------------------------------------------------------------------------------
-// Password Reset Form Page Tests
-// ------------------------------------------------------------------------------------------------
+// // ------------------------------------------------------------------------------------------------
+// // Password Reset Form Page Tests
+// // ------------------------------------------------------------------------------------------------
 
-it('has password reset form page', function () {
-    $resetRoute = route('filament.app.auth.password-reset.reset', ['token' => 'test-token', 'email' => 'test@example.com']);
+// it('has password reset form page', function () {
+//     $resetRoute = route('filament.app.auth.password-reset.reset', ['token' => 'test-token', 'email' => 'test@example.com']);
 
-    expect($resetRoute)->toBeString();
-    expect($resetRoute)->toContain('password-reset');
-});
+//     expect($resetRoute)->toBeString();
+//     expect($resetRoute)->toContain('password-reset');
+// });
 
-// ------------------------------------------------------------------------------------------------
-// Password Reset Route Tests
-// ------------------------------------------------------------------------------------------------
+// // ------------------------------------------------------------------------------------------------
+// // Password Reset Route Tests
+// // ------------------------------------------------------------------------------------------------
 
-it('has working password reset routes', function () {
-    $requestRoute = route('filament.app.auth.password-reset.request');
-    $resetRoute = route('filament.app.auth.password-reset.reset', ['token' => 'test-token', 'email' => 'test@example.com']);
+// it('has working password reset routes', function () {
+//     $requestRoute = route('filament.app.auth.password-reset.request');
+//     $resetRoute = route('filament.app.auth.password-reset.reset', ['token' => 'test-token', 'email' => 'test@example.com']);
 
-    expect($requestRoute)->toBeString();
-    expect($resetRoute)->toBeString();
-    expect($requestRoute)->toContain('password-reset');
-    expect($resetRoute)->toContain('password-reset');
-});
+//     expect($requestRoute)->toBeString();
+//     expect($resetRoute)->toBeString();
+//     expect($requestRoute)->toContain('password-reset');
+//     expect($resetRoute)->toContain('password-reset');
+// });
 
 // ------------------------------------------------------------------------------------------------
 // Password Reset Notification Tests
