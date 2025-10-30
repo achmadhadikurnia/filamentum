@@ -85,7 +85,7 @@ it('sends verify email change notification', function () {
     ]);
 
     // Send verify email change notification
-    $user->notify(new VerifyEmailChange());
+    $user->notify(new VerifyEmailChange);
 
     Notification::assertSentTo($user, VerifyEmailChange::class);
 });
