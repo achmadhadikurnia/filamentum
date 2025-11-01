@@ -28,25 +28,20 @@ class UserPolicy
     {
         // Prevent users from updating themselves
         if ($authUser->is($user)) {
-            return true; // Users can update their own profiles
+            return false;
         }
-        
-        // Check if the user being updated has Super Admin role
-        if ($user->hasRole('Super Admin')) {
-            // Only Super Admins can update other Super Admins
-            return $authUser->hasRole('Super Admin');
+
+        // Admins cannot update Super Admins or other Admins
+        if ($authUser->hasRole('Admin')) {
+            // Admins can only update Regular users
+            return !$user->hasRole('Super Admin') && !$user->hasRole('Admin') && $authUser->can('Update:User');
         }
-        
-        // Admins can only update Regular users
-        if ($authUser->hasRole('Admin') && !$user->hasRole('Super Admin')) {
-            return true;
-        }
-        
+
         // Super Admins can update anyone
         if ($authUser->hasRole('Super Admin')) {
-            return true;
+            return $authUser->can('Update:User');
         }
-        
+
         return false;
     }
 
@@ -56,23 +51,18 @@ class UserPolicy
         if ($authUser->is($user)) {
             return false;
         }
-        
-        // Check if the user to be deleted has Super Admin role
-        if ($user->hasRole('Super Admin')) {
-            // Only Super Admins can delete other Super Admins
-            return $authUser->hasRole('Super Admin') && $authUser->can('Delete:User');
+
+        // Admins cannot delete Super Admins or other Admins
+        if ($authUser->hasRole('Admin')) {
+            // Admins can only delete Regular users
+            return !$user->hasRole('Super Admin') && !$user->hasRole('Admin') && $authUser->can('Delete:User');
         }
-        
-        // Admins can only delete Regular users
-        if ($authUser->hasRole('Admin') && !$user->hasRole('Super Admin')) {
-            return $authUser->can('Delete:User');
-        }
-        
+
         // Super Admins can delete anyone
         if ($authUser->hasRole('Super Admin')) {
             return $authUser->can('Delete:User');
         }
-        
+
         return false;
     }
 
