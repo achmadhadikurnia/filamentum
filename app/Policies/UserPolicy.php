@@ -35,7 +35,13 @@ class UserPolicy
         if ($authUser->is($user)) {
             return false;
         }
-        
+
+        // Check if the user to be deleted has Super Admin role
+        if ($user->hasRole('Super Admin')) {
+            // Only Super Admins can delete other Super Admins
+            return $authUser->hasRole('Super Admin') && $authUser->can('Delete:User');
+        }
+
         return $authUser->can('Delete:User');
     }
 
