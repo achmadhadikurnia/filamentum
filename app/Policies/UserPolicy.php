@@ -24,9 +24,30 @@ class UserPolicy
         return $authUser->can('Create:User');
     }
 
-    public function update(AuthUser $authUser): bool
+    public function update(AuthUser $authUser, AuthUser $user): bool
     {
-        return $authUser->can('Update:User');
+        // Prevent users from updating themselves
+        if ($authUser->is($user)) {
+            return true; // Users can update their own profiles
+        }
+        
+        // Check if the user being updated has Super Admin role
+        if ($user->hasRole('Super Admin')) {
+            // Only Super Admins can update other Super Admins
+            return $authUser->hasRole('Super Admin');
+        }
+        
+        // Admins can only update Regular users
+        if ($authUser->hasRole('Admin') && !$user->hasRole('Super Admin')) {
+            return true;
+        }
+        
+        // Super Admins can update anyone
+        if ($authUser->hasRole('Super Admin')) {
+            return true;
+        }
+        
+        return false;
     }
 
     public function delete(AuthUser $authUser, AuthUser $user): bool
@@ -35,14 +56,24 @@ class UserPolicy
         if ($authUser->is($user)) {
             return false;
         }
-
+        
         // Check if the user to be deleted has Super Admin role
         if ($user->hasRole('Super Admin')) {
             // Only Super Admins can delete other Super Admins
             return $authUser->hasRole('Super Admin') && $authUser->can('Delete:User');
         }
-
-        return $authUser->can('Delete:User');
+        
+        // Admins can only delete Regular users
+        if ($authUser->hasRole('Admin') && !$user->hasRole('Super Admin')) {
+            return $authUser->can('Delete:User');
+        }
+        
+        // Super Admins can delete anyone
+        if ($authUser->hasRole('Super Admin')) {
+            return $authUser->can('Delete:User');
+        }
+        
+        return false;
     }
 
     public function restore(AuthUser $authUser): bool

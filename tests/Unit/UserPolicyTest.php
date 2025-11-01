@@ -13,7 +13,7 @@ beforeEach(function () {
     $this->superAdmin = User::where('email', 'superadmin@filamentum.com')->first();
     $this->admin = User::where('email', 'admin@filamentum.com')->first();
     $this->regularUser = User::where('email', 'user@filamentum.com')->first();
-
+    
     $this->policy = new UserPolicy();
 });
 
@@ -46,7 +46,7 @@ it('allows super admin to delete other super admins', function () {
     // Create another super admin user for testing
     $anotherSuperAdmin = User::factory()->create();
     $anotherSuperAdmin->assignRole('Super Admin');
-
+    
     $result = $this->policy->delete($this->superAdmin, $anotherSuperAdmin);
     expect($result)->toBeTrue();
 });
@@ -59,4 +59,29 @@ it('prevents admin from deleting super admin', function () {
 it('prevents regular user from deleting super admin', function () {
     $result = $this->policy->delete($this->regularUser, $this->superAdmin);
     expect($result)->toBeFalse();
+});
+
+it('allows super admin to update other users', function () {
+    $result = $this->policy->update($this->superAdmin, $this->admin);
+    expect($result)->toBeTrue();
+});
+
+it('allows admin to update regular users', function () {
+    $result = $this->policy->update($this->admin, $this->regularUser);
+    expect($result)->toBeTrue();
+});
+
+it('prevents admin from updating super admin', function () {
+    $result = $this->policy->update($this->admin, $this->superAdmin);
+    expect($result)->toBeFalse();
+});
+
+it('prevents regular user from updating super admin', function () {
+    $result = $this->policy->update($this->regularUser, $this->superAdmin);
+    expect($result)->toBeFalse();
+});
+
+it('allows users to update themselves', function () {
+    $result = $this->policy->update($this->admin, $this->admin);
+    expect($result)->toBeTrue();
 });
