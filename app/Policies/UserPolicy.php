@@ -26,9 +26,9 @@ class UserPolicy
 
     public function update(AuthUser $authUser, AuthUser $user): bool
     {
-        // Prevent users from updating themselves
+        // Allow users to update themselves
         if ($authUser->is($user)) {
-            return false;
+            return $authUser->can('Update:User');
         }
 
         // Admins cannot update Super Admins or other Admins
@@ -49,7 +49,7 @@ class UserPolicy
     {
         // Prevent users from deleting themselves
         if ($authUser->is($user)) {
-            return false;
+            return $authUser->can('Delete:User');
         }
 
         // Admins cannot delete Super Admins or other Admins
