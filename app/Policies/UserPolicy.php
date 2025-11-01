@@ -29,8 +29,13 @@ class UserPolicy
         return $authUser->can('Update:User');
     }
 
-    public function delete(AuthUser $authUser): bool
+    public function delete(AuthUser $authUser, AuthUser $user): bool
     {
+        // Prevent users from deleting themselves
+        if ($authUser->is($user)) {
+            return false;
+        }
+        
         return $authUser->can('Delete:User');
     }
 
