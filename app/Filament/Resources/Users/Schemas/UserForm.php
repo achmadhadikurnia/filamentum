@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use Filament\Facades\Filament;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Spatie\Permission\Models\Role;
 
 class UserForm
 {
@@ -43,11 +45,32 @@ class UserForm
                     ->helperText('Leave blank to keep current password. Must be at least 8 characters long')
                     ->visible(fn (string $operation): bool => $operation === 'edit'),
                 Select::make('roles')
-                    ->relationship('roles', 'name')
                     ->multiple()
                     ->preload()
                     ->label('Roles')
-                    ->helperText('Select one or more roles for this user'),
+                    ->helperText('Select one or more roles for this user')
+                    ->options(fn () => static::getAvailableRoles()),
             ]);
+    }
+
+    /**
+     * Get available roles based on the current user's permissions.
+     * Only show Super Admin role to users who already have that role.
+     */
+    public static function getAvailableRoles(): array
+    {
+        // Get the currently authenticated user
+        $user = Filament::auth()->user();
+        
+        // Get all roles
+        $roles = Role::all();
+        
+        // If user doesn't have Super Admin role, exclude it from the options
+        if (!$user || !$user->hasRole('Super Admin')) {
+            $roles = $roles->filter(fn ($role) => $role->name !== 'Super Admin');
+        }
+        
+        // Return roles as an associative array
+        return $roles->pluck('name', 'id')->toArray();
     }
 }
