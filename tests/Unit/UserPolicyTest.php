@@ -80,17 +80,47 @@ it('prevents regular user from deleting themselves', function () {
 // User Update Policy Tests
 // ------------------------------------------------------------------------------------------------
 
-it('allows super admin to update users', function () {
-    $result = $this->policy->update($this->superAdmin);
+it('allows super admin to update themselves', function () {
+    $result = $this->policy->update($this->superAdmin, $this->superAdmin);
     expect($result)->toBeTrue();
 });
 
-it('allows admin to update users', function () {
-    $result = $this->policy->update($this->admin);
+it('allows super admin to update admin users', function () {
+    $result = $this->policy->update($this->superAdmin, $this->admin);
     expect($result)->toBeTrue();
 });
 
-it('prevents regular user from updating users', function () {
-    $result = $this->policy->update($this->regularUser);
+it('allows super admin to update regular users', function () {
+    $result = $this->policy->update($this->superAdmin, $this->regularUser);
+    expect($result)->toBeTrue();
+});
+
+it('prevents admin from updating super admin users', function () {
+    $result = $this->policy->update($this->admin, $this->superAdmin);
+    expect($result)->toBeFalse();
+});
+
+it('allows admin to update themselves', function () {
+    $result = $this->policy->update($this->admin, $this->admin);
+    expect($result)->toBeTrue();
+});
+
+it('allows admin to update regular users', function () {
+    $result = $this->policy->update($this->admin, $this->regularUser);
+    expect($result)->toBeTrue();
+});
+
+it('prevents regular user from updating super admin', function () {
+    $result = $this->policy->update($this->regularUser, $this->superAdmin);
+    expect($result)->toBeFalse();
+});
+
+it('prevents regular user from updating admin', function () {
+    $result = $this->policy->update($this->regularUser, $this->admin);
+    expect($result)->toBeFalse();
+});
+
+it('prevents regular user from updating themselves', function () {
+    $result = $this->policy->update($this->regularUser, $this->regularUser);
     expect($result)->toBeFalse();
 });

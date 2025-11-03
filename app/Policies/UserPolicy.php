@@ -24,8 +24,13 @@ class UserPolicy
         return $authUser->can('Create:User');
     }
 
-    public function update(AuthUser $authUser): bool
+    public function update(AuthUser $authUser, AuthUser $user): bool
     {
+        // Only Super Admin users can edit other Super Admin users
+        if ($user->hasRole('Super Admin')) {
+            return $authUser->hasRole('Super Admin');
+        }
+
         return $authUser->can('Update:User');
     }
 

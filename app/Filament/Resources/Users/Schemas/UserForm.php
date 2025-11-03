@@ -61,15 +61,15 @@ class UserForm
     {
         // Get the currently authenticated user
         $user = Filament::auth()->user();
-        
+
         // Get all roles
         $roles = Role::all();
-        
+
         // If user doesn't have Super Admin role, exclude it from the options
-        if (!$user || !$user->hasRole('Super Admin')) {
+        if (! $user || ! $user->hasRole('Super Admin')) {
             $roles = $roles->filter(fn ($role) => $role->name !== 'Super Admin');
         }
-        
+
         // Return roles as an associative array
         return $roles->pluck('name', 'id')->toArray();
     }
