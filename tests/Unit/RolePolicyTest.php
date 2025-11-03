@@ -11,40 +11,55 @@ beforeEach(function () {
     $this->seed(ShieldSeeder::class);
     $this->seed(RoleUserSeeder::class);
 
-    // Get all roles created by the seeders
+    // Get all test users created by the seeders
+    $this->superAdmin = User::where('email', 'superadmin@filamentum.com')->first();
+    $this->admin = User::where('email', 'admin@filamentum.com')->first();
+    $this->regularUser = User::where('email', 'user@filamentum.com')->first();
+
+    // Get roles
     $this->superAdminRole = Role::findByName('Super Admin');
     $this->adminRole = Role::findByName('Admin');
     $this->userRole = Role::findByName('User');
 
-    // Get a user to test with
-    $this->superAdmin = User::where('email', 'superadmin@filamentum.com')->first();
-
-    $this->policy = new RolePolicy;
+    // Create policy instance
+    $this->rolePolicy = new RolePolicy;
 });
 
 // ------------------------------------------------------------------------------------------------
 // Role Deletion Policy Tests
 // ------------------------------------------------------------------------------------------------
 
-it('prevents deletion of Super Admin role', function () {
-    $result = $this->policy->delete($this->superAdmin, $this->superAdminRole);
-    expect($result)->toBeFalse();
+it('prevents anyone from deleting the Super Admin role', function () {
+    // Test that even super admin cannot delete Super Admin role
+    expect($this->rolePolicy->delete($this->superAdmin, $this->superAdminRole))->toBeFalse();
+
+    // Test that admin cannot delete Super Admin role
+    expect($this->rolePolicy->delete($this->admin, $this->superAdminRole))->toBeFalse();
+
+    // Test that regular user cannot delete Super Admin role
+    expect($this->rolePolicy->delete($this->regularUser, $this->superAdminRole))->toBeFalse();
 });
 
-it('allows deletion of Admin role', function () {
-    $result = $this->policy->delete($this->superAdmin, $this->adminRole);
-    expect($result)->toBeTrue();
+it('allows super admin to delete other roles', function () {
+    // Test that super admin can delete Admin role
+    expect($this->rolePolicy->delete($this->superAdmin, $this->adminRole))->toBeTrue();
+
+    // Test that super admin can delete User role
+    expect($this->rolePolicy->delete($this->superAdmin, $this->userRole))->toBeTrue();
 });
 
-it('allows deletion of User role', function () {
-    $result = $this->policy->delete($this->superAdmin, $this->userRole);
-    expect($result)->toBeTrue();
+it('denies admin from deleting any roles', function () {
+    // Test that admin cannot delete Admin role
+    expect($this->rolePolicy->delete($this->admin, $this->adminRole))->toBeFalse();
+
+    // Test that admin cannot delete User role
+    expect($this->rolePolicy->delete($this->admin, $this->userRole))->toBeFalse();
 });
 
-it('allows deletion of other roles', function () {
-    // Create a test role for deletion
-    $testRole = Role::create(['name' => 'Test Role']);
+it('denies regular user from deleting any roles', function () {
+    // Test that regular user cannot delete Admin role
+    expect($this->rolePolicy->delete($this->regularUser, $this->adminRole))->toBeFalse();
 
-    $result = $this->policy->delete($this->superAdmin, $testRole);
-    expect($result)->toBeTrue();
+    // Test that regular user cannot delete User role
+    expect($this->rolePolicy->delete($this->regularUser, $this->userRole))->toBeFalse();
 });
