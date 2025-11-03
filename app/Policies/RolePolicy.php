@@ -34,6 +34,11 @@ class RolePolicy
 
     public function delete(AuthUser $authUser, Role $role): bool
     {
+        // Prevent deletion of the "Super Admin" role
+        if ($role->name === 'Super Admin') {
+            return false;
+        }
+
         return $authUser->can('Delete:Role');
     }
 
@@ -44,6 +49,11 @@ class RolePolicy
 
     public function forceDelete(AuthUser $authUser, Role $role): bool
     {
+        // Prevent force deletion of the "Super Admin" role
+        if ($role->name === 'Super Admin') {
+            return false;
+        }
+
         return $authUser->can('ForceDelete:Role');
     }
 
@@ -59,6 +69,11 @@ class RolePolicy
 
     public function replicate(AuthUser $authUser, Role $role): bool
     {
+        // Prevent replication of the "Super Admin" role
+        if ($role->name === 'Super Admin') {
+            return false;
+        }
+
         return $authUser->can('Replicate:Role');
     }
 
