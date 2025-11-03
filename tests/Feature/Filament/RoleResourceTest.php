@@ -51,6 +51,32 @@ it('denies regular user access to role list', function () {
 });
 
 // ------------------------------------------------------------------------------------------------
+// Role List Page Create Button Tests
+// ------------------------------------------------------------------------------------------------
+
+it('shows create button for super admin on role list page', function () {
+    Livewire::actingAs($this->superAdmin);
+
+    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+        ->assertActionExists('create')
+        ->assertActionVisible('create');
+});
+
+it('hides create button for admin on role list page', function () {
+    Livewire::actingAs($this->admin);
+
+    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+        ->assertForbidden();
+});
+
+it('hides create button for regular user on role list page', function () {
+    Livewire::actingAs($this->regularUser);
+
+    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+        ->assertForbidden();
+});
+
+// ------------------------------------------------------------------------------------------------
 // Role Creation Page Tests
 // ------------------------------------------------------------------------------------------------
 
