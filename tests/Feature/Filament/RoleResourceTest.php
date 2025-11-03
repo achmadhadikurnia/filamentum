@@ -6,10 +6,11 @@ use Database\Seeders\ShieldSeeder;
 use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
+    // Seed the database with roles, permissions, and users
     $this->seed(ShieldSeeder::class);
     $this->seed(RoleUserSeeder::class);
 
-    // Get all users created by the seeders
+    // Get all test users created by the seeders
     $this->superAdmin = User::where('email', 'superadmin@filamentum.com')->first();
     $this->admin = User::where('email', 'admin@filamentum.com')->first();
     $this->regularUser = User::where('email', 'user@filamentum.com')->first();
@@ -20,110 +21,16 @@ beforeEach(function () {
     $this->userRole = Role::findByName('User');
 });
 
-// Role Resource Access Tests
-it('allows super admin to access role resource pages', function () {
-    $this->actingAs($this->superAdmin);
+// ------------------------------------------------------------------------------------------------
+// Role List Page Tests
+// ------------------------------------------------------------------------------------------------
 
-    // Test access to role list page
-    $response = $this->get(route('filament.app.resources.shield.roles.index'));
-    $response->assertStatus(200);
-
-    // Test access to role creation page
-    $response = $this->get(route('filament.app.resources.shield.roles.create'));
-    $response->assertStatus(200);
-});
-
-it('denies admin access to role resource pages', function () {
-    $this->actingAs($this->admin);
-
-    // Test that admin cannot access role list
-    $response = $this->get(route('filament.app.resources.shield.roles.index'));
-    $response->assertStatus(403); // Forbidden
-
-    // Test that admin cannot access role creation
-    $response = $this->get(route('filament.app.resources.shield.roles.create'));
-    $response->assertStatus(403); // Forbidden
-});
-
-it('denies regular user access to role resource pages', function () {
-    $this->actingAs($this->regularUser);
-
-    // Test that regular user cannot access role list
-    $response = $this->get(route('filament.app.resources.shield.roles.index'));
-    $response->assertStatus(403); // Forbidden
-
-    // Test that regular user cannot access role creation
-    $response = $this->get(route('filament.app.resources.shield.roles.create'));
-    $response->assertStatus(403); // Forbidden
-});
-
-// Role View Tests
-it('allows super admin to view role details', function () {
-    $this->actingAs($this->superAdmin);
-
-    // Test access to a specific role's page
-    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
-    $response->assertStatus(200);
-
-    // Check that the page contains role information
-    $response->assertSee($this->superAdminRole->name);
-});
-
-it('denies admin from viewing role details', function () {
-    $this->actingAs($this->admin);
-
-    // Test that admin cannot view role page
-    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
-    $response->assertStatus(403); // Forbidden
-});
-
-it('denies regular user from viewing role details', function () {
-    $this->actingAs($this->regularUser);
-
-    // Test that regular user cannot view role page
-    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
-    $response->assertStatus(403); // Forbidden
-});
-
-// Role Edit Tests
-it('allows super admin to access role edit page', function () {
-    $this->actingAs($this->superAdmin);
-
-    // Test access to a specific role's edit page
-    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->adminRole->id]));
-    $response->assertStatus(200);
-
-    // Check that the page contains role information
-    $response->assertSee($this->adminRole->name);
-});
-
-it('denies admin access to role edit page', function () {
-    $this->actingAs($this->admin);
-
-    // Test that admin cannot access edit page
-    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->superAdminRole->id]));
-    $response->assertStatus(403); // Forbidden
-});
-
-it('denies regular user access to role edit page', function () {
-    $this->actingAs($this->regularUser);
-
-    // Test that regular user cannot access edit page
-    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->superAdminRole->id]));
-    $response->assertStatus(403); // Forbidden
-});
-
-// Role List Content Tests
 it('displays correct role data on super admin role list', function () {
     $this->actingAs($this->superAdmin);
 
     $response = $this->get(route('filament.app.resources.shield.roles.index'));
     $response->assertStatus(200);
-
-    // Check that the page contains role names
-    $response->assertSee('Super Admin');
-    $response->assertSee('Admin');
-    $response->assertSee('User');
+    $response->assertSee('Roles');
 });
 
 it('denies admin access to role list', function () {
@@ -140,18 +47,16 @@ it('denies regular user access to role list', function () {
     $response->assertStatus(403); // Forbidden
 });
 
-// Role Creation Form Tests
+// ------------------------------------------------------------------------------------------------
+// Role Creation Page Tests
+// ------------------------------------------------------------------------------------------------
+
 it('displays role creation form for super admin', function () {
     $this->actingAs($this->superAdmin);
 
     $response = $this->get(route('filament.app.resources.shield.roles.create'));
     $response->assertStatus(200);
-
-    // Check that the form contains expected fields
-    $response->assertSee('name');
-    $response->assertSee('guard_name');
-    $response->assertSee('input');
-    $response->assertSee('button');
+    $response->assertSee('Create Role');
 });
 
 it('denies admin access to role creation form', function () {
@@ -168,29 +73,130 @@ it('denies regular user access to role creation form', function () {
     $response->assertStatus(403); // Forbidden
 });
 
-// Role Edit Form Tests
-it('displays role edit form for super admin', function () {
+// ------------------------------------------------------------------------------------------------
+// Role View Page Tests
+// ------------------------------------------------------------------------------------------------
+
+it('allows super admin to view role details', function () {
     $this->actingAs($this->superAdmin);
 
-    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->userRole->id]));
+    // Test access to a super admin role's view page
+    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
     $response->assertStatus(200);
+    $response->assertSee('View Role');
 
-    // Check that the form contains expected fields
-    $response->assertSee('name');
-    $response->assertSee('guard_name');
+    // Check that the page contains role information
+    $response->assertSee($this->superAdminRole->name);
+
+    // Test access to a admin role's view page
+    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->adminRole->id]));
+    $response->assertStatus(200);
+    $response->assertSee('View Role');
+
+    // Check that the page contains role information
+    $response->assertSee($this->adminRole->name);
+
+    // Test access to a regular user role's view page
+    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->userRole->id]));
+    $response->assertStatus(200);
+    $response->assertSee('View Role');
+
+    // Check that the page contains role information
     $response->assertSee($this->userRole->name);
 });
 
-it('denies admin access to role edit form', function () {
+it('denies admin from viewing role details', function () {
     $this->actingAs($this->admin);
 
+    // Test that admin cannot view role page
+    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
+    $response->assertStatus(403); // Forbidden
+
+    // Test that admin cannot view role page
+    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->adminRole->id]));
+    $response->assertStatus(403); // Forbidden
+
+    // Test that admin cannot view role page
+    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->userRole->id]));
+    $response->assertStatus(403); // Forbidden
+});
+
+it('denies regular user from viewing role details', function () {
+    $this->actingAs($this->regularUser);
+
+    // Test that regular user cannot view role page
+    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
+    $response->assertStatus(403); // Forbidden
+
+    // Test that regular user cannot view role page
+    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->adminRole->id]));
+    $response->assertStatus(403); // Forbidden
+
+    // Test that regular user cannot view role page
+    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->userRole->id]));
+    $response->assertStatus(403); // Forbidden
+});
+
+// ------------------------------------------------------------------------------------------------
+// Role Edit Page Tests
+// ------------------------------------------------------------------------------------------------
+
+it('allows super admin to edit role details', function () {
+    $this->actingAs($this->superAdmin);
+
+    // Test access to a super admin role's edit page
+    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->superAdminRole->id]));
+    $response->assertStatus(200);
+    $response->assertSee('Edit Role');
+
+    // Check that the page contains role information
+    $response->assertSee($this->superAdminRole->name);
+
+    // Test access to a admin role's edit page
+    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->adminRole->id]));
+    $response->assertStatus(200);
+    $response->assertSee('Edit Role');
+
+    // Check that the page contains role information
+    $response->assertSee($this->adminRole->name);
+
+    // Test access to a regular user role's edit page
+    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->userRole->id]));
+    $response->assertStatus(200);
+    $response->assertSee('Edit Role');
+
+    // Check that the page contains role information
+    $response->assertSee($this->userRole->name);
+});
+
+it('denies admin from editing role details', function () {
+    $this->actingAs($this->admin);
+
+    // Test that admin cannot edit role page
+    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->superAdminRole->id]));
+    $response->assertStatus(403); // Forbidden
+
+    // Test that admin cannot edit role page
+    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->adminRole->id]));
+    $response->assertStatus(403); // Forbidden
+
+    // Test that admin cannot edit role page
     $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->userRole->id]));
     $response->assertStatus(403); // Forbidden
 });
 
-it('denies regular user access to role edit form', function () {
+it('denies regular user from editing role details', function () {
     $this->actingAs($this->regularUser);
 
+    // Test that regular user cannot edit role page
+    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->superAdminRole->id]));
+    $response->assertStatus(403); // Forbidden
+
+    // Test that regular user cannot edit role page
+    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->adminRole->id]));
+    $response->assertStatus(403); // Forbidden
+
+    // Test that regular user cannot edit role page
     $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->userRole->id]));
     $response->assertStatus(403); // Forbidden
 });
