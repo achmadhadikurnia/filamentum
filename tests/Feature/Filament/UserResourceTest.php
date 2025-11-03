@@ -218,3 +218,44 @@ it('denies regular user access to user edit form', function () {
     $response = $this->get(route('filament.app.resources.users.edit', ['record' => $this->admin->id]));
     $response->assertStatus(403); // Forbidden
 });
+
+// Role Selection Security Tests
+it('shows super admin role option to super admin users when creating users', function () {
+    $this->actingAs($this->superAdmin);
+
+    $response = $this->get(route('filament.app.resources.users.create'));
+    $response->assertStatus(200);
+
+    // Check that super admin can see the Super Admin role option
+    $response->assertSee('Super Admin');
+});
+
+it('hides super admin role option from admin users when creating users', function () {
+    $this->actingAs($this->admin);
+
+    $response = $this->get(route('filament.app.resources.users.create'));
+    $response->assertStatus(200);
+
+    // Check that admin cannot see the Super Admin role option
+    $response->assertDontSee('Super Admin');
+});
+
+it('shows super admin role option to super admin users when editing users', function () {
+    $this->actingAs($this->superAdmin);
+
+    $response = $this->get(route('filament.app.resources.users.edit', ['record' => $this->admin->id]));
+    $response->assertStatus(200);
+
+    // Check that super admin can see the Super Admin role option
+    $response->assertSee('Super Admin');
+});
+
+it('hides super admin role option from admin users when editing users', function () {
+    $this->actingAs($this->admin);
+
+    $response = $this->get(route('filament.app.resources.users.edit', ['record' => $this->regularUser->id]));
+    $response->assertStatus(200);
+
+    // Check that admin cannot see the Super Admin role option
+    $response->assertDontSee('Super Admin');
+});
