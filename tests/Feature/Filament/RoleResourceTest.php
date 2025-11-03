@@ -1,11 +1,8 @@
 <?php
 
 use App\Models\User;
-use BezhanSalleh\FilamentShield\Resources\Roles\RoleResource;
 use Database\Seeders\RoleUserSeeder;
 use Database\Seeders\ShieldSeeder;
-use Filament\Facades\Filament;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Spatie\Permission\Models\Role;
 
