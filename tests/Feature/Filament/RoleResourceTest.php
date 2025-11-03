@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles;
+use BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole;
 use Database\Seeders\RoleUserSeeder;
 use Database\Seeders\ShieldSeeder;
 use Livewire\Livewire;
@@ -55,7 +57,7 @@ it('denies regular user access to role list', function () {
 it('shows create button for super admin on role list page and allows navigation to create page', function () {
     Livewire::actingAs($this->superAdmin);
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+    Livewire::test(ListRoles::class)
         ->assertActionExists('create')
         ->assertActionVisible('create')
         ->callAction('create')
@@ -65,14 +67,14 @@ it('shows create button for super admin on role list page and allows navigation 
 it('hides create button for admin on role list page', function () {
     Livewire::actingAs($this->admin);
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+    Livewire::test(ListRoles::class)
         ->assertForbidden();
 });
 
 it('hides create button for regular user on role list page', function () {
     Livewire::actingAs($this->regularUser);
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+    Livewire::test(ListRoles::class)
         ->assertForbidden();
 });
 
@@ -238,19 +240,19 @@ it('shows edit button for super admin on role list page and allows navigation to
     Livewire::actingAs($this->superAdmin);
 
     // Check that super admin can see edit button for all roles and can navigate to edit page
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+    Livewire::test(ListRoles::class)
         ->assertTableActionExists('edit')
         ->assertTableActionVisible('edit', $this->superAdminRole)
         ->callTableAction('edit', $this->superAdminRole)
         ->assertSuccessful();
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+    Livewire::test(ListRoles::class)
         ->assertTableActionExists('edit')
         ->assertTableActionVisible('edit', $this->adminRole)
         ->callTableAction('edit', $this->adminRole)
         ->assertSuccessful();
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+    Livewire::test(ListRoles::class)
         ->assertTableActionExists('edit')
         ->assertTableActionVisible('edit', $this->userRole)
         ->callTableAction('edit', $this->userRole)
@@ -260,14 +262,14 @@ it('shows edit button for super admin on role list page and allows navigation to
 it('hides edit button for admin on role list page', function () {
     Livewire::actingAs($this->admin);
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+    Livewire::test(ListRoles::class)
         ->assertForbidden();
 });
 
 it('hides edit button for regular user on role list page', function () {
     Livewire::actingAs($this->regularUser);
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+    Livewire::test(ListRoles::class)
         ->assertForbidden();
 });
 
@@ -279,19 +281,19 @@ it('shows edit button for super admin on role view page and allows navigation to
     Livewire::actingAs($this->superAdmin);
 
     // Check that super admin can see edit button on view page for all roles and can navigate to edit page
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole::class, ['record' => $this->superAdminRole->id])
+    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
         ->assertActionExists('edit')
         ->assertActionVisible('edit')
         ->callAction('edit')
         ->assertSuccessful();
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole::class, ['record' => $this->adminRole->id])
+    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
         ->assertActionExists('edit')
         ->assertActionVisible('edit')
         ->callAction('edit')
         ->assertSuccessful();
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole::class, ['record' => $this->userRole->id])
+    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
         ->assertActionExists('edit')
         ->assertActionVisible('edit')
         ->callAction('edit')
@@ -302,13 +304,13 @@ it('hides edit button for admin on role view page', function () {
     Livewire::actingAs($this->admin);
 
     // Check that admin cannot see edit button on view page
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole::class, ['record' => $this->superAdminRole->id])
+    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
         ->assertForbidden();
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole::class, ['record' => $this->adminRole->id])
+    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
         ->assertForbidden();
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole::class, ['record' => $this->userRole->id])
+    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
         ->assertForbidden();
 });
 
@@ -316,13 +318,13 @@ it('hides edit button for regular user on role view page', function () {
     Livewire::actingAs($this->regularUser);
 
     // Check that regular user cannot see edit button on view page
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole::class, ['record' => $this->superAdminRole->id])
+    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
         ->assertForbidden();
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole::class, ['record' => $this->adminRole->id])
+    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
         ->assertForbidden();
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole::class, ['record' => $this->userRole->id])
+    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
         ->assertForbidden();
 });
 
@@ -334,7 +336,7 @@ it('shows delete button for super admin on role list page for admin and user rol
     Livewire::actingAs($this->superAdmin);
 
     // Check that super admin can see delete button for admin roles and can delete them
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+    Livewire::test(ListRoles::class)
         ->assertTableActionExists('delete')
         ->assertTableActionVisible('delete', $this->adminRole)
         ->callTableAction('delete', $this->adminRole)
@@ -344,7 +346,7 @@ it('shows delete button for super admin on role list page for admin and user rol
     $this->assertDatabaseMissing('roles', ['id' => $this->adminRole->id]);
 
     // Check that super admin can see delete button for user roles and can delete them
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+    Livewire::test(ListRoles::class)
         ->assertTableActionExists('delete')
         ->assertTableActionVisible('delete', $this->userRole)
         ->callTableAction('delete', $this->userRole)
@@ -358,20 +360,20 @@ it('hides delete button for super admin on role list page for super admin role',
     Livewire::actingAs($this->superAdmin);
 
     // Check that super admin cannot see delete button for super admin role
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+    Livewire::test(ListRoles::class)
         ->assertTableActionHidden('delete', $this->superAdminRole);
 });
 
 it('hides delete button for admin on role list page', function () {
     Livewire::actingAs($this->admin);
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+    Livewire::test(ListRoles::class)
         ->assertForbidden();
 });
 
 it('hides delete button for regular user on role list page', function () {
     Livewire::actingAs($this->regularUser);
 
-    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+    Livewire::test(ListRoles::class)
         ->assertForbidden();
 });
