@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Resources\Roles\RoleResource;
 use Database\Seeders\RoleUserSeeder;
 use Database\Seeders\ShieldSeeder;
 use Filament\Facades\Filament;
@@ -54,12 +55,14 @@ it('denies regular user access to role list', function () {
 // Role List Page Create Button Tests
 // ------------------------------------------------------------------------------------------------
 
-it('shows create button for super admin on role list page', function () {
+it('shows create button for super admin on role list page and allows navigation to create page', function () {
     Livewire::actingAs($this->superAdmin);
 
     Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
         ->assertActionExists('create')
-        ->assertActionVisible('create');
+        ->assertActionVisible('create')
+        ->callAction('create')
+        ->assertSuccessful();
 });
 
 it('hides create button for admin on role list page', function () {
@@ -234,15 +237,27 @@ it('denies regular user from editing role details', function () {
 // Role List Page Edit Button Tests
 // ------------------------------------------------------------------------------------------------
 
-it('shows edit button for super admin on role list page', function () {
+it('shows edit button for super admin on role list page and allows navigation to edit page', function () {
     Livewire::actingAs($this->superAdmin);
 
-    // Check that super admin can see edit button for all roles
+    // Check that super admin can see edit button for all roles and can navigate to edit page
     Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
         ->assertTableActionExists('edit')
         ->assertTableActionVisible('edit', $this->superAdminRole)
+        ->callTableAction('edit', $this->superAdminRole)
+        ->assertSuccessful();
+
+    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+        ->assertTableActionExists('edit')
         ->assertTableActionVisible('edit', $this->adminRole)
-        ->assertTableActionVisible('edit', $this->userRole);
+        ->callTableAction('edit', $this->adminRole)
+        ->assertSuccessful();
+
+    Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
+        ->assertTableActionExists('edit')
+        ->assertTableActionVisible('edit', $this->userRole)
+        ->callTableAction('edit', $this->userRole)
+        ->assertSuccessful();
 });
 
 it('hides edit button for admin on role list page', function () {
@@ -263,21 +278,27 @@ it('hides edit button for regular user on role list page', function () {
 // Role View Page Edit Button Tests
 // ------------------------------------------------------------------------------------------------
 
-it('shows edit button for super admin on role view page', function () {
+it('shows edit button for super admin on role view page and allows navigation to edit page', function () {
     Livewire::actingAs($this->superAdmin);
 
-    // Check that super admin can see edit button on view page for all roles
+    // Check that super admin can see edit button on view page for all roles and can navigate to edit page
     Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole::class, ['record' => $this->superAdminRole->id])
         ->assertActionExists('edit')
-        ->assertActionVisible('edit');
+        ->assertActionVisible('edit')
+        ->callAction('edit')
+        ->assertSuccessful();
 
     Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole::class, ['record' => $this->adminRole->id])
         ->assertActionExists('edit')
-        ->assertActionVisible('edit');
+        ->assertActionVisible('edit')
+        ->callAction('edit')
+        ->assertSuccessful();
 
     Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole::class, ['record' => $this->userRole->id])
         ->assertActionExists('edit')
-        ->assertActionVisible('edit');
+        ->assertActionVisible('edit')
+        ->callAction('edit')
+        ->assertSuccessful();
 });
 
 it('hides edit button for admin on role view page', function () {
@@ -312,10 +333,10 @@ it('hides edit button for regular user on role view page', function () {
 // Role List Page Delete Button Tests
 // ------------------------------------------------------------------------------------------------
 
-it('shows delete button for super admin on role list page for admin and user roles', function () {
+it('shows delete button for super admin on role list page for admin and user roles and allows deletion', function () {
     Livewire::actingAs($this->superAdmin);
 
-    // Check that super admin can see delete button for admin roles
+    // Check that super admin can see delete button for admin roles and can delete them
     Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
         ->assertTableActionExists('delete')
         ->assertTableActionVisible('delete', $this->adminRole)
@@ -325,14 +346,14 @@ it('shows delete button for super admin on role list page for admin and user rol
     // Verify admin role was deleted
     $this->assertDatabaseMissing('roles', ['id' => $this->adminRole->id]);
 
-    // Check that super admin can see delete button for user roles
+    // Check that super admin can see delete button for user roles and can delete them
     Livewire::test(\BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles::class)
         ->assertTableActionExists('delete')
         ->assertTableActionVisible('delete', $this->userRole)
         ->callTableAction('delete', $this->userRole)
         ->assertSuccessful();
 
-    // Verify admin role was deleted
+    // Verify user role was deleted
     $this->assertDatabaseMissing('roles', ['id' => $this->userRole->id]);
 });
 
