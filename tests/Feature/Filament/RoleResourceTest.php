@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Resources\Roles\Pages\CreateRole;
+use BezhanSalleh\FilamentShield\Resources\Roles\Pages\EditRole;
 use BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles;
 use BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole;
 use Database\Seeders\RoleUserSeeder;
@@ -31,23 +33,23 @@ beforeEach(function () {
 it('displays correct role data on super admin role list', function () {
     Livewire::actingAs($this->superAdmin);
 
-    $response = $this->get(route('filament.app.resources.shield.roles.index'));
-    $response->assertOk();
-    $response->assertSee('Roles');
+    Livewire::test(ListRoles::class)
+        ->assertSuccessful()
+        ->assertSee('Roles');
 });
 
 it('denies admin access to role list', function () {
     Livewire::actingAs($this->admin);
 
-    $response = $this->get(route('filament.app.resources.shield.roles.index'));
-    $response->assertForbidden();
+    Livewire::test(ListRoles::class)
+        ->assertForbidden();
 });
 
 it('denies regular user access to role list', function () {
     Livewire::actingAs($this->regularUser);
 
-    $response = $this->get(route('filament.app.resources.shield.roles.index'));
-    $response->assertForbidden();
+    Livewire::test(ListRoles::class)
+        ->assertForbidden();
 });
 
 // ------------------------------------------------------------------------------------------------
@@ -85,23 +87,23 @@ it('hides create button for regular user on role list page', function () {
 it('displays role creation form for super admin', function () {
     Livewire::actingAs($this->superAdmin);
 
-    $response = $this->get(route('filament.app.resources.shield.roles.create'));
-    $response->assertOk();
-    $response->assertSee('Create Role');
+    Livewire::test(CreateRole::class)
+        ->assertSuccessful()
+        ->assertSee('Create Role');
 });
 
 it('denies admin access to role creation form', function () {
     Livewire::actingAs($this->admin);
 
-    $response = $this->get(route('filament.app.resources.shield.roles.create'));
-    $response->assertForbidden();
+    Livewire::test(CreateRole::class)
+        ->assertForbidden();
 });
 
 it('denies regular user access to role creation form', function () {
     Livewire::actingAs($this->regularUser);
 
-    $response = $this->get(route('filament.app.resources.shield.roles.create'));
-    $response->assertForbidden();
+    Livewire::test(CreateRole::class)
+        ->assertForbidden();
 });
 
 // ------------------------------------------------------------------------------------------------
@@ -112,60 +114,54 @@ it('allows super admin to view role details', function () {
     Livewire::actingAs($this->superAdmin);
 
     // Test access to a super admin role's view page
-    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
-    $response->assertOk();
-    $response->assertSee('View Role');
-
-    // Check that the page contains role information
-    $response->assertSee($this->superAdminRole->name);
+    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
+        ->assertSuccessful()
+        ->assertSee('View Role')
+        ->assertSee($this->superAdminRole->name);
 
     // Test access to a admin role's view page
-    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->adminRole->id]));
-    $response->assertOk();
-    $response->assertSee('View Role');
-
-    // Check that the page contains role information
-    $response->assertSee($this->adminRole->name);
+    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
+        ->assertSuccessful()
+        ->assertSee('View Role')
+        ->assertSee($this->adminRole->name);
 
     // Test access to a regular user role's view page
-    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->userRole->id]));
-    $response->assertOk();
-    $response->assertSee('View Role');
-
-    // Check that the page contains role information
-    $response->assertSee($this->userRole->name);
+    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
+        ->assertSuccessful()
+        ->assertSee('View Role')
+        ->assertSee($this->userRole->name);
 });
 
 it('denies admin from viewing role details', function () {
     Livewire::actingAs($this->admin);
 
     // Test that admin cannot view role page
-    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
-    $response->assertForbidden();
+    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
+        ->assertForbidden();
 
     // Test that admin cannot view role page
-    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->adminRole->id]));
-    $response->assertForbidden();
+    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
+        ->assertForbidden();
 
     // Test that admin cannot view role page
-    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->userRole->id]));
-    $response->assertForbidden();
+    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
+        ->assertForbidden();
 });
 
 it('denies regular user from viewing role details', function () {
     Livewire::actingAs($this->regularUser);
 
     // Test that regular user cannot view role page
-    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
-    $response->assertForbidden();
+    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
+        ->assertForbidden();
 
     // Test that regular user cannot view role page
-    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->adminRole->id]));
-    $response->assertForbidden();
+    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
+        ->assertForbidden();
 
     // Test that regular user cannot view role page
-    $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->userRole->id]));
-    $response->assertForbidden();
+    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
+        ->assertForbidden();
 });
 
 // ------------------------------------------------------------------------------------------------
@@ -176,60 +172,54 @@ it('allows super admin to edit role details', function () {
     Livewire::actingAs($this->superAdmin);
 
     // Test access to a super admin role's edit page
-    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->superAdminRole->id]));
-    $response->assertOk();
-    $response->assertSee('Edit Role');
-
-    // Check that the page contains role information
-    $response->assertSee($this->superAdminRole->name);
+    Livewire::test(EditRole::class, ['record' => $this->superAdminRole->id])
+        ->assertSuccessful()
+        ->assertSee('Edit Role')
+        ->assertSee($this->superAdminRole->name);
 
     // Test access to a admin role's edit page
-    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->adminRole->id]));
-    $response->assertOk();
-    $response->assertSee('Edit Role');
-
-    // Check that the page contains role information
-    $response->assertSee($this->adminRole->name);
+    Livewire::test(EditRole::class, ['record' => $this->adminRole->id])
+        ->assertSuccessful()
+        ->assertSee('Edit Role')
+        ->assertSee($this->adminRole->name);
 
     // Test access to a regular user role's edit page
-    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->userRole->id]));
-    $response->assertOk();
-    $response->assertSee('Edit Role');
-
-    // Check that the page contains role information
-    $response->assertSee($this->userRole->name);
+    Livewire::test(EditRole::class, ['record' => $this->userRole->id])
+        ->assertSuccessful()
+        ->assertSee('Edit Role')
+        ->assertSee($this->userRole->name);
 });
 
 it('denies admin from editing role details', function () {
     Livewire::actingAs($this->admin);
 
     // Test that admin cannot edit role page
-    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->superAdminRole->id]));
-    $response->assertForbidden();
+    Livewire::test(EditRole::class, ['record' => $this->superAdminRole->id])
+        ->assertForbidden();
 
     // Test that admin cannot edit role page
-    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->adminRole->id]));
-    $response->assertForbidden();
+    Livewire::test(EditRole::class, ['record' => $this->adminRole->id])
+        ->assertForbidden();
 
     // Test that admin cannot edit role page
-    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->userRole->id]));
-    $response->assertForbidden();
+    Livewire::test(EditRole::class, ['record' => $this->userRole->id])
+        ->assertForbidden();
 });
 
 it('denies regular user from editing role details', function () {
     Livewire::actingAs($this->regularUser);
 
     // Test that regular user cannot edit role page
-    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->superAdminRole->id]));
-    $response->assertForbidden();
+    Livewire::test(EditRole::class, ['record' => $this->superAdminRole->id])
+        ->assertForbidden();
 
     // Test that regular user cannot edit role page
-    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->adminRole->id]));
-    $response->assertForbidden();
+    Livewire::test(EditRole::class, ['record' => $this->adminRole->id])
+        ->assertForbidden();
 
     // Test that regular user cannot edit role page
-    $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->userRole->id]));
-    $response->assertForbidden();
+    Livewire::test(EditRole::class, ['record' => $this->userRole->id])
+        ->assertForbidden();
 });
 
 // ------------------------------------------------------------------------------------------------
