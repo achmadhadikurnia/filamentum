@@ -40,14 +40,14 @@ it('denies admin access to role list', function () {
     Livewire::actingAs($this->admin);
 
     $response = $this->get(route('filament.app.resources.shield.roles.index'));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 });
 
 it('denies regular user access to role list', function () {
     Livewire::actingAs($this->regularUser);
 
     $response = $this->get(route('filament.app.resources.shield.roles.index'));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 });
 
 // ------------------------------------------------------------------------------------------------
@@ -92,14 +92,14 @@ it('denies admin access to role creation form', function () {
     Livewire::actingAs($this->admin);
 
     $response = $this->get(route('filament.app.resources.shield.roles.create'));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 });
 
 it('denies regular user access to role creation form', function () {
     Livewire::actingAs($this->regularUser);
 
     $response = $this->get(route('filament.app.resources.shield.roles.create'));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 });
 
 // ------------------------------------------------------------------------------------------------
@@ -139,15 +139,15 @@ it('denies admin from viewing role details', function () {
 
     // Test that admin cannot view role page
     $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 
     // Test that admin cannot view role page
     $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->adminRole->id]));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 
     // Test that admin cannot view role page
     $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->userRole->id]));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 });
 
 it('denies regular user from viewing role details', function () {
@@ -155,15 +155,15 @@ it('denies regular user from viewing role details', function () {
 
     // Test that regular user cannot view role page
     $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 
     // Test that regular user cannot view role page
     $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->adminRole->id]));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 
     // Test that regular user cannot view role page
     $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->userRole->id]));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 });
 
 // ------------------------------------------------------------------------------------------------
@@ -203,15 +203,15 @@ it('denies admin from editing role details', function () {
 
     // Test that admin cannot edit role page
     $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->superAdminRole->id]));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 
     // Test that admin cannot edit role page
     $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->adminRole->id]));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 
     // Test that admin cannot edit role page
     $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->userRole->id]));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 });
 
 it('denies regular user from editing role details', function () {
@@ -219,15 +219,15 @@ it('denies regular user from editing role details', function () {
 
     // Test that regular user cannot edit role page
     $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->superAdminRole->id]));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 
     // Test that regular user cannot edit role page
     $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->adminRole->id]));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 
     // Test that regular user cannot edit role page
     $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->userRole->id]));
-    $response->assertStatus(403); // Forbidden
+    $response->assertForbidden();
 });
 
 // ------------------------------------------------------------------------------------------------
