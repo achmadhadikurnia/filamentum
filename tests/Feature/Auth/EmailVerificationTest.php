@@ -31,7 +31,7 @@ it('displays email verification prompt for unverified users', function () {
     $this->actingAs($user);
     $response = $this->get(route('filament.app.auth.email-verification.prompt'));
 
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('Verify your email address');
 });
 

@@ -22,7 +22,7 @@ beforeEach(function () {
 it('displays the registration page for guests', function () {
     $response = $this->get(route('filament.app.auth.register'));
 
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('Register');
     $response->assertSee('Name');
     $response->assertSee('Email');

@@ -30,7 +30,7 @@ it('displays the profile page for super admin', function () {
     Livewire::actingAs($this->superAdmin);
     $response = $this->get(route('filament.app.auth.profile'));
 
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('Profile');
     $response->assertSee($this->superAdmin->name);
     $response->assertSee($this->superAdmin->email);
@@ -40,7 +40,7 @@ it('displays the profile page for admin', function () {
     Livewire::actingAs($this->admin);
     $response = $this->get(route('filament.app.auth.profile'));
 
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('Profile');
     $response->assertSee($this->admin->name);
     $response->assertSee($this->admin->email);
@@ -50,7 +50,7 @@ it('displays the profile page for regular user', function () {
     Livewire::actingAs($this->regularUser);
     $response = $this->get(route('filament.app.auth.profile'));
 
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('Profile');
     $response->assertSee($this->regularUser->name);
     $response->assertSee($this->regularUser->email);

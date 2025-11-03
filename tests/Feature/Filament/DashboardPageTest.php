@@ -30,7 +30,7 @@ it('allows super admin to access dashboard after authentication', function () {
     Livewire::actingAs($this->superAdmin);
     $response = $this->get(route('filament.app.pages.dashboard'));
 
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('Dashboard');
 });
 
@@ -38,7 +38,7 @@ it('allows admin to access dashboard after authentication', function () {
     Livewire::actingAs($this->admin);
     $response = $this->get(route('filament.app.pages.dashboard'));
 
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('Dashboard');
 });
 
@@ -46,6 +46,6 @@ it('allows regular user to access dashboard after authentication', function () {
     Livewire::actingAs($this->regularUser);
     $response = $this->get(route('filament.app.pages.dashboard'));
 
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('Dashboard');
 });

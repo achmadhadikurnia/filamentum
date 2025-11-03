@@ -25,7 +25,7 @@ beforeEach(function () {
 it('displays password reset request page for guests', function () {
     $response = $this->get(route('filament.app.auth.password-reset.request'));
 
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('Forgot password');
     $response->assertSee('email');
 });

@@ -32,7 +32,7 @@ it('displays correct role data on super admin role list', function () {
     Livewire::actingAs($this->superAdmin);
 
     $response = $this->get(route('filament.app.resources.shield.roles.index'));
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('Roles');
 });
 
@@ -84,7 +84,7 @@ it('displays role creation form for super admin', function () {
     Livewire::actingAs($this->superAdmin);
 
     $response = $this->get(route('filament.app.resources.shield.roles.create'));
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('Create Role');
 });
 
@@ -111,7 +111,7 @@ it('allows super admin to view role details', function () {
 
     // Test access to a super admin role's view page
     $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('View Role');
 
     // Check that the page contains role information
@@ -119,7 +119,7 @@ it('allows super admin to view role details', function () {
 
     // Test access to a admin role's view page
     $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->adminRole->id]));
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('View Role');
 
     // Check that the page contains role information
@@ -127,7 +127,7 @@ it('allows super admin to view role details', function () {
 
     // Test access to a regular user role's view page
     $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->userRole->id]));
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('View Role');
 
     // Check that the page contains role information
@@ -175,7 +175,7 @@ it('allows super admin to edit role details', function () {
 
     // Test access to a super admin role's edit page
     $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->superAdminRole->id]));
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('Edit Role');
 
     // Check that the page contains role information
@@ -183,7 +183,7 @@ it('allows super admin to edit role details', function () {
 
     // Test access to a admin role's edit page
     $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->adminRole->id]));
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('Edit Role');
 
     // Check that the page contains role information
@@ -191,7 +191,7 @@ it('allows super admin to edit role details', function () {
 
     // Test access to a regular user role's edit page
     $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->userRole->id]));
-    $response->assertStatus(200);
+    $response->assertOk();
     $response->assertSee('Edit Role');
 
     // Check that the page contains role information
