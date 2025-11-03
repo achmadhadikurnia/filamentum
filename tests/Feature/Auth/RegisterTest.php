@@ -30,7 +30,7 @@ it('displays the registration page for guests', function () {
 });
 
 it('redirects authenticated super admin away from register page', function () {
-    $this->actingAs($this->superAdmin);
+    Livewire::actingAs($this->superAdmin);
     $response = $this->get(route('filament.app.auth.register'));
 
     $response->assertStatus(302);
@@ -38,7 +38,7 @@ it('redirects authenticated super admin away from register page', function () {
 });
 
 it('redirects authenticated admin away from register page', function () {
-    $this->actingAs($this->admin);
+    Livewire::actingAs($this->admin);
     $response = $this->get(route('filament.app.auth.register'));
 
     $response->assertStatus(302);
@@ -46,7 +46,7 @@ it('redirects authenticated admin away from register page', function () {
 });
 
 it('redirects authenticated regular user away from register page', function () {
-    $this->actingAs($this->regularUser);
+    Livewire::actingAs($this->regularUser);
     $response = $this->get(route('filament.app.auth.register'));
 
     $response->assertStatus(302);

@@ -29,7 +29,7 @@ it('displays the login page for guests', function () {
 });
 
 it('redirects authenticated super admin away from login page', function () {
-    $this->actingAs($this->superAdmin);
+    Livewire::actingAs($this->superAdmin);
     $response = $this->get(route('filament.app.auth.login'));
 
     $response->assertStatus(302);
@@ -37,7 +37,7 @@ it('redirects authenticated super admin away from login page', function () {
 });
 
 it('redirects authenticated admin away from login page', function () {
-    $this->actingAs($this->admin);
+    Livewire::actingAs($this->admin);
     $response = $this->get(route('filament.app.auth.login'));
 
     $response->assertStatus(302);
@@ -45,7 +45,7 @@ it('redirects authenticated admin away from login page', function () {
 });
 
 it('redirects authenticated regular user away from login page', function () {
-    $this->actingAs($this->regularUser);
+    Livewire::actingAs($this->regularUser);
     $response = $this->get(route('filament.app.auth.login'));
 
     $response->assertStatus(302);
@@ -64,7 +64,7 @@ it('redirects unauthenticated users to login page when accessing dashboard', fun
 });
 
 it('allows super admin to access dashboard after authentication', function () {
-    $this->actingAs($this->superAdmin);
+    Livewire::actingAs($this->superAdmin);
     $response = $this->get(route('filament.app.pages.dashboard'));
 
     $response->assertStatus(200);
@@ -72,7 +72,7 @@ it('allows super admin to access dashboard after authentication', function () {
 });
 
 it('allows admin to access dashboard after authentication', function () {
-    $this->actingAs($this->admin);
+    Livewire::actingAs($this->admin);
     $response = $this->get(route('filament.app.pages.dashboard'));
 
     $response->assertStatus(200);
@@ -80,7 +80,7 @@ it('allows admin to access dashboard after authentication', function () {
 });
 
 it('allows regular user to access dashboard after authentication', function () {
-    $this->actingAs($this->regularUser);
+    Livewire::actingAs($this->regularUser);
     $response = $this->get(route('filament.app.pages.dashboard'));
 
     $response->assertStatus(200);
@@ -93,7 +93,7 @@ it('allows regular user to access dashboard after authentication', function () {
 
 it('redirects to login after super admin logs out', function () {
     // Given: A user is logged in and can access their dashboard
-    $this->actingAs($this->superAdmin);
+    Livewire::actingAs($this->superAdmin);
     $dashboardResponse = $this->get(route('filament.app.pages.dashboard'));
     $dashboardResponse->assertStatus(200);
 
@@ -110,7 +110,7 @@ it('redirects to login after super admin logs out', function () {
 
 it('redirects to login after admin logs out', function () {
     // Given: A user is logged in and can access their dashboard
-    $this->actingAs($this->admin);
+    Livewire::actingAs($this->admin);
     $dashboardResponse = $this->get(route('filament.app.pages.dashboard'));
     $dashboardResponse->assertStatus(200);
 
@@ -127,7 +127,7 @@ it('redirects to login after admin logs out', function () {
 
 it('redirects to login after regular user logs out', function () {
     // Given: A user is logged in and can access their dashboard
-    $this->actingAs($this->regularUser);
+    Livewire::actingAs($this->regularUser);
     $dashboardResponse = $this->get(route('filament.app.pages.dashboard'));
     $dashboardResponse->assertStatus(200);
 

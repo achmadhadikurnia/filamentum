@@ -27,7 +27,7 @@ it('redirects unauthenticated users to login when accessing profile', function (
 });
 
 it('displays the profile page for super admin', function () {
-    $this->actingAs($this->superAdmin);
+    Livewire::actingAs($this->superAdmin);
     $response = $this->get(route('filament.app.auth.profile'));
 
     $response->assertStatus(200);
@@ -37,7 +37,7 @@ it('displays the profile page for super admin', function () {
 });
 
 it('displays the profile page for admin', function () {
-    $this->actingAs($this->admin);
+    Livewire::actingAs($this->admin);
     $response = $this->get(route('filament.app.auth.profile'));
 
     $response->assertStatus(200);
@@ -47,7 +47,7 @@ it('displays the profile page for admin', function () {
 });
 
 it('displays the profile page for regular user', function () {
-    $this->actingAs($this->regularUser);
+    Livewire::actingAs($this->regularUser);
     $response = $this->get(route('filament.app.auth.profile'));
 
     $response->assertStatus(200);

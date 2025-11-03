@@ -36,7 +36,7 @@ it('displays email verification prompt for unverified users', function () {
 });
 
 it('redirects verified super admin away from email verification prompt', function () {
-    $this->actingAs($this->superAdmin);
+    Livewire::actingAs($this->superAdmin);
     $response = $this->get(route('filament.app.auth.email-verification.prompt'));
 
     $response->assertStatus(302);
@@ -44,7 +44,7 @@ it('redirects verified super admin away from email verification prompt', functio
 });
 
 it('redirects verified admin away from email verification prompt', function () {
-    $this->actingAs($this->admin);
+    Livewire::actingAs($this->admin);
     $response = $this->get(route('filament.app.auth.email-verification.prompt'));
 
     $response->assertStatus(302);
@@ -52,7 +52,7 @@ it('redirects verified admin away from email verification prompt', function () {
 });
 
 it('redirects verified regular user away from email verification prompt', function () {
-    $this->actingAs($this->regularUser);
+    Livewire::actingAs($this->regularUser);
     $response = $this->get(route('filament.app.auth.email-verification.prompt'));
 
     $response->assertStatus(302);

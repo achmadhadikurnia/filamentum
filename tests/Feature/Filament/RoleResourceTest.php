@@ -29,7 +29,7 @@ beforeEach(function () {
 // ------------------------------------------------------------------------------------------------
 
 it('displays correct role data on super admin role list', function () {
-    $this->actingAs($this->superAdmin);
+    Livewire::actingAs($this->superAdmin);
 
     $response = $this->get(route('filament.app.resources.shield.roles.index'));
     $response->assertStatus(200);
@@ -37,14 +37,14 @@ it('displays correct role data on super admin role list', function () {
 });
 
 it('denies admin access to role list', function () {
-    $this->actingAs($this->admin);
+    Livewire::actingAs($this->admin);
 
     $response = $this->get(route('filament.app.resources.shield.roles.index'));
     $response->assertStatus(403); // Forbidden
 });
 
 it('denies regular user access to role list', function () {
-    $this->actingAs($this->regularUser);
+    Livewire::actingAs($this->regularUser);
 
     $response = $this->get(route('filament.app.resources.shield.roles.index'));
     $response->assertStatus(403); // Forbidden
@@ -55,7 +55,7 @@ it('denies regular user access to role list', function () {
 // ------------------------------------------------------------------------------------------------
 
 it('displays role creation form for super admin', function () {
-    $this->actingAs($this->superAdmin);
+    Livewire::actingAs($this->superAdmin);
 
     $response = $this->get(route('filament.app.resources.shield.roles.create'));
     $response->assertStatus(200);
@@ -63,14 +63,14 @@ it('displays role creation form for super admin', function () {
 });
 
 it('denies admin access to role creation form', function () {
-    $this->actingAs($this->admin);
+    Livewire::actingAs($this->admin);
 
     $response = $this->get(route('filament.app.resources.shield.roles.create'));
     $response->assertStatus(403); // Forbidden
 });
 
 it('denies regular user access to role creation form', function () {
-    $this->actingAs($this->regularUser);
+    Livewire::actingAs($this->regularUser);
 
     $response = $this->get(route('filament.app.resources.shield.roles.create'));
     $response->assertStatus(403); // Forbidden
@@ -81,7 +81,7 @@ it('denies regular user access to role creation form', function () {
 // ------------------------------------------------------------------------------------------------
 
 it('allows super admin to view role details', function () {
-    $this->actingAs($this->superAdmin);
+    Livewire::actingAs($this->superAdmin);
 
     // Test access to a super admin role's view page
     $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
@@ -109,7 +109,7 @@ it('allows super admin to view role details', function () {
 });
 
 it('denies admin from viewing role details', function () {
-    $this->actingAs($this->admin);
+    Livewire::actingAs($this->admin);
 
     // Test that admin cannot view role page
     $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
@@ -125,7 +125,7 @@ it('denies admin from viewing role details', function () {
 });
 
 it('denies regular user from viewing role details', function () {
-    $this->actingAs($this->regularUser);
+    Livewire::actingAs($this->regularUser);
 
     // Test that regular user cannot view role page
     $response = $this->get(route('filament.app.resources.shield.roles.view', ['record' => $this->superAdminRole->id]));
@@ -145,7 +145,7 @@ it('denies regular user from viewing role details', function () {
 // ------------------------------------------------------------------------------------------------
 
 it('allows super admin to edit role details', function () {
-    $this->actingAs($this->superAdmin);
+    Livewire::actingAs($this->superAdmin);
 
     // Test access to a super admin role's edit page
     $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->superAdminRole->id]));
@@ -173,7 +173,7 @@ it('allows super admin to edit role details', function () {
 });
 
 it('denies admin from editing role details', function () {
-    $this->actingAs($this->admin);
+    Livewire::actingAs($this->admin);
 
     // Test that admin cannot edit role page
     $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->superAdminRole->id]));
@@ -189,7 +189,7 @@ it('denies admin from editing role details', function () {
 });
 
 it('denies regular user from editing role details', function () {
-    $this->actingAs($this->regularUser);
+    Livewire::actingAs($this->regularUser);
 
     // Test that regular user cannot edit role page
     $response = $this->get(route('filament.app.resources.shield.roles.edit', ['record' => $this->superAdminRole->id]));

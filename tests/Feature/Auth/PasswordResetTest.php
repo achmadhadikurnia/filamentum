@@ -31,7 +31,7 @@ it('displays password reset request page for guests', function () {
 });
 
 it('redirects authenticated super admin away from password reset request page', function () {
-    $this->actingAs($this->superAdmin);
+    Livewire::actingAs($this->superAdmin);
     $response = $this->get(route('filament.app.auth.password-reset.request'));
 
     $response->assertStatus(302);
@@ -39,7 +39,7 @@ it('redirects authenticated super admin away from password reset request page', 
 });
 
 it('redirects authenticated admin away from password reset request page', function () {
-    $this->actingAs($this->admin);
+    Livewire::actingAs($this->admin);
     $response = $this->get(route('filament.app.auth.password-reset.request'));
 
     $response->assertStatus(302);
@@ -47,7 +47,7 @@ it('redirects authenticated admin away from password reset request page', functi
 });
 
 it('redirects authenticated regular user away from password reset request page', function () {
-    $this->actingAs($this->regularUser);
+    Livewire::actingAs($this->regularUser);
     $response = $this->get(route('filament.app.auth.password-reset.request'));
 
     $response->assertStatus(302);
