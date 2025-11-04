@@ -23,7 +23,7 @@ beforeEach(function () {
 // ------------------------------------------------------------------------------------------------
 
 it('redirects unauthenticated users to login page when accessing dashboard', function () {
-    $response = $this->get(route('filament.app.pages.dashboard'));
+    $response = $this->get(Dashboard::getUrl());
 
     $response->assertRedirect(route('filament.app.auth.login'));
 });
@@ -31,7 +31,7 @@ it('redirects unauthenticated users to login page when accessing dashboard', fun
 it('allows super admin to access dashboard after authentication', function () {
     $this->actingAs($this->superAdmin);
 
-    $response = $this->get(route('filament.app.pages.dashboard'));
+    $response = $this->get(Dashboard::getUrl());
 
     $response->assertSuccessful()
         ->assertSee('Dashboard');
@@ -40,7 +40,7 @@ it('allows super admin to access dashboard after authentication', function () {
 it('allows admin to access dashboard after authentication', function () {
     $this->actingAs($this->admin);
 
-    $response = $this->get(route('filament.app.pages.dashboard'));
+    $response = $this->get(Dashboard::getUrl());
 
     $response->assertSuccessful()
         ->assertSee('Dashboard');
@@ -49,7 +49,7 @@ it('allows admin to access dashboard after authentication', function () {
 it('allows regular user to access dashboard after authentication', function () {
     $this->actingAs($this->regularUser);
 
-    $response = $this->get(route('filament.app.pages.dashboard'));
+    $response = $this->get(Dashboard::getUrl());
 
     $response->assertSuccessful()
         ->assertSee('Dashboard');
