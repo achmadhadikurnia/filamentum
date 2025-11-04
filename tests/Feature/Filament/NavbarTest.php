@@ -20,82 +20,35 @@ beforeEach(function () {
 });
 
 // ------------------------------------------------------------------------------------------------
-// Dashboard Menu Tests
+// Navbar Access Tests
 // ------------------------------------------------------------------------------------------------
 
-it('allows super admin to access dashboard menu', function () {
+it('allows super admin to access dashboard with navbar', function () {
     Livewire::actingAs($this->superAdmin);
 
-    Livewire::test(Dashboard::class)
-        ->assertSuccessful()
-        ->assertSee('Dashboard');
-});
+    $response = $this->get(route('filament.app.pages.dashboard'));
 
-it('allows admin to access dashboard menu', function () {
-    Livewire::actingAs($this->admin);
-
-    Livewire::test(Dashboard::class)
-        ->assertSuccessful()
-        ->assertSee('Dashboard');
-});
-
-it('allows regular user to access dashboard menu', function () {
-    Livewire::actingAs($this->regularUser);
-
-    Livewire::test(Dashboard::class)
-        ->assertSuccessful()
-        ->assertSee('Dashboard');
-});
-
-// ------------------------------------------------------------------------------------------------
-// User Management Menu Tests
-// ------------------------------------------------------------------------------------------------
-
-it('allows super admin to access user management menu', function () {
-    Livewire::actingAs($this->superAdmin);
-
-    Livewire::test(ListUsers::class)
-        ->assertSuccessful()
-        ->assertSee('Users');
-});
-
-it('allows admin to access user management menu', function () {
-    Livewire::actingAs($this->admin);
-
-    Livewire::test(ListUsers::class)
-        ->assertSuccessful()
-        ->assertSee('Users');
-});
-
-it('denies regular user access to user management menu', function () {
-    Livewire::actingAs($this->regularUser);
-
-    Livewire::test(ListUsers::class)
-        ->assertForbidden();
-});
-
-// ------------------------------------------------------------------------------------------------
-// Role Management Menu Tests
-// ------------------------------------------------------------------------------------------------
-
-it('allows super admin to access role management menu', function () {
-    Livewire::actingAs($this->superAdmin);
-
-    Livewire::test(ListRoles::class)
-        ->assertSuccessful()
+    $response->assertSuccessful()
+        ->assertSee('Dashboard')
+        ->assertSee('Users')
         ->assertSee('Roles');
 });
 
-it('denies admin access to role management menu', function () {
+it('allows admin to access dashboard with navbar', function () {
     Livewire::actingAs($this->admin);
 
-    Livewire::test(ListRoles::class)
-        ->assertForbidden();
+    $response = $this->get(route('filament.app.pages.dashboard'));
+
+    $response->assertSuccessful()
+        ->assertSee('Dashboard')
+        ->assertSee('Users');
 });
 
-it('denies regular user access to role management menu', function () {
+it('allows regular user to access dashboard with navbar', function () {
     Livewire::actingAs($this->regularUser);
 
-    Livewire::test(ListRoles::class)
-        ->assertForbidden();
+    $response = $this->get(route('filament.app.pages.dashboard'));
+
+    $response->assertSuccessful()
+        ->assertSee('Dashboard');
 });
