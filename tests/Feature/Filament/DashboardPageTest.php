@@ -3,6 +3,7 @@
 use App\Models\User;
 use Database\Seeders\RoleUserSeeder;
 use Database\Seeders\ShieldSeeder;
+use Filament\Auth\Pages\Login;
 use Filament\Pages\Dashboard;
 use Livewire\Livewire;
 
@@ -22,30 +23,63 @@ beforeEach(function () {
 // ------------------------------------------------------------------------------------------------
 
 it('redirects unauthenticated users to login page when accessing dashboard', function () {
-    Livewire::test(Dashboard::class)
-        ->assertRedirect(route('filament.app.auth.login'));
+    $response = $this->get(route('filament.app.pages.dashboard'));
+
+    $response->assertRedirect(route('filament.app.auth.login'));
 });
 
 it('allows super admin to access dashboard after authentication', function () {
-    Livewire::actingAs($this->superAdmin);
+    $this->actingAs($this->superAdmin);
 
-    Livewire::test(Dashboard::class)
-        ->assertSuccessful()
+    $response = $this->get(route('filament.app.pages.dashboard'));
+
+    $response->assertSuccessful()
         ->assertSee('Dashboard');
 });
 
 it('allows admin to access dashboard after authentication', function () {
-    Livewire::actingAs($this->admin);
+    $this->actingAs($this->admin);
 
-    Livewire::test(Dashboard::class)
-        ->assertSuccessful()
+    $response = $this->get(route('filament.app.pages.dashboard'));
+
+    $response->assertSuccessful()
         ->assertSee('Dashboard');
 });
 
 it('allows regular user to access dashboard after authentication', function () {
-    Livewire::actingAs($this->regularUser);
+    $this->actingAs($this->regularUser);
 
-    Livewire::test(Dashboard::class)
-        ->assertSuccessful()
+    $response = $this->get(route('filament.app.pages.dashboard'));
+
+    $response->assertSuccessful()
         ->assertSee('Dashboard');
 });
+
+// it('redirects unauthenticated users to login page when accessing dashboard', function () {
+//     Livewire::test(Dashboard::class)
+//         ->assertRedirect(Login::class);
+// });
+
+// it('allows super admin to access dashboard after authentication', function () {
+//     Livewire::actingAs($this->superAdmin);
+
+//     Livewire::test(Dashboard::class)
+//         ->assertSuccessful()
+//         ->assertSee('Dashboard');
+// });
+
+// it('allows admin to access dashboard after authentication', function () {
+//     Livewire::actingAs($this->admin);
+
+//     Livewire::test(Dashboard::class)
+//         ->assertSuccessful()
+//         ->assertSee('Dashboard');
+// });
+
+// it('allows regular user to access dashboard after authentication', function () {
+//     Livewire::actingAs($this->regularUser);
+
+//     Livewire::test(Dashboard::class)
+//         ->assertSuccessful()
+//         ->assertSee('Dashboard');
+// });
