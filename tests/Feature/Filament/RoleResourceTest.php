@@ -185,23 +185,20 @@ it('allows valid role creation', function () {
 it('allows super admin to view role details', function () {
     Livewire::actingAs($this->superAdmin);
 
-    // // Test access to a super admin role's view page
-    // Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
-    //     ->assertSuccessful()
-    //     ->assertSee('View Role')
-    //     ->assertSee($this->superAdminRole->name);
+    // Test access to a super admin role's view page
+    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
+        ->assertSuccessful()
+        ->assertSee('View Role');
 
-    // // Test access to a admin role's view page
-    // Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
-    //     ->assertSuccessful()
-    //     ->assertSee('View Role')
-    //     ->assertSee($this->adminRole->name);
+    // Test access to a admin role's view page
+    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
+        ->assertSuccessful()
+        ->assertSee('View Role');
 
-    // // Test access to a regular user role's view page
-    // Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
-    //     ->assertSuccessful()
-    //     ->assertSee('View Role')
-    //     ->assertSee($this->userRole->name);
+    // Test access to a regular user role's view page
+    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
+        ->assertSuccessful()
+        ->assertSee('View Role');
 });
 
 it('denies admin from viewing role details', function () {
@@ -244,22 +241,19 @@ it('allows super admin to edit role details', function () {
     Livewire::actingAs($this->superAdmin);
 
     // Test access to a super admin role's edit page
-    // Livewire::test(EditRole::class, ['record' => $this->superAdminRole->id])
-    //     ->assertSuccessful()
-    //     ->assertSee('Edit Role')
-    //     ->assertSee($this->superAdminRole->name);
+    Livewire::test(EditRole::class, ['record' => $this->superAdminRole->id])
+        ->assertSuccessful()
+        ->assertSee('Edit Role');
 
-    // // Test access to a admin role's edit page
-    // Livewire::test(EditRole::class, ['record' => $this->adminRole->id])
-    //     ->assertSuccessful()
-    //     ->assertSee('Edit Role')
-    //     ->assertSee($this->adminRole->name);
+    // Test access to a admin role's edit page
+    Livewire::test(EditRole::class, ['record' => $this->adminRole->id])
+        ->assertSuccessful()
+        ->assertSee('Edit Role');
 
-    // // Test access to a regular user role's edit page
-    // Livewire::test(EditRole::class, ['record' => $this->userRole->id])
-    //     ->assertSuccessful()
-    //     ->assertSee('Edit Role')
-    //     ->assertSee($this->userRole->name);
+    // Test access to a regular user role's edit page
+    Livewire::test(EditRole::class, ['record' => $this->userRole->id])
+        ->assertSuccessful()
+        ->assertSee('Edit Role');
 });
 
 it('denies admin from editing role details', function () {
