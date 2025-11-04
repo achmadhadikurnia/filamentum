@@ -339,6 +339,106 @@ it('hides edit button for regular user on role list page', function () {
 });
 
 // ------------------------------------------------------------------------------------------------
+// Role Update Form Validation Tests
+// ------------------------------------------------------------------------------------------------
+
+it('validates role name is required on update', function () {
+    Livewire::actingAs($this->superAdmin);
+
+    Livewire::test(EditRole::class, ['record' => $this->adminRole->id])
+        ->assertSuccessful()
+        ->fillForm([
+            'name' => '',
+            'guard_name' => 'web',
+        ])
+        ->call('save')
+        ->assertHasFormErrors(['name' => 'required']);
+});
+
+it('validates role name is unique on update', function () {
+    Livewire::actingAs($this->superAdmin);
+
+    // Create another role
+    Role::create(['name' => 'other-role', 'guard_name' => 'web']);
+
+    Livewire::test(EditRole::class, ['record' => $this->adminRole->id])
+        ->assertSuccessful()
+        ->fillForm([
+            'name' => 'other-role', // Same name as existing role
+            'guard_name' => 'web',
+        ])
+        ->call('save')
+        ->assertHasFormErrors(['name' => 'unique']);
+});
+
+it('validates role name max length on update', function () {
+    Livewire::actingAs($this->superAdmin);
+
+    Livewire::test(EditRole::class, ['record' => $this->adminRole->id])
+        ->assertSuccessful()
+        ->fillForm([
+            'name' => str_repeat('a', 256), // Exceeds max length of 255
+            'guard_name' => 'web',
+        ])
+        ->call('save')
+        ->assertHasFormErrors(['name' => 'max']);
+});
+
+// ------------------------------------------------------------------------------------------------
+// Role Update Success Tests
+// ------------------------------------------------------------------------------------------------
+
+it('allows super admin to update role name', function () {
+    Livewire::actingAs($this->superAdmin);
+
+    $newRoleName = 'updated-admin-role';
+
+    Livewire::test(EditRole::class, ['record' => $this->adminRole->id])
+        ->assertSuccessful()
+        ->fillForm([
+            'name' => $newRoleName,
+            'guard_name' => 'web',
+        ])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    // Verify the role was updated in the database
+    $this->assertDatabaseHas('roles', [
+        'id' => $this->adminRole->id,
+        'name' => $newRoleName,
+        'guard_name' => 'web',
+    ]);
+
+    // Verify the old name no longer exists
+    $this->assertDatabaseMissing('roles', [
+        'id' => $this->adminRole->id,
+        'name' => 'Admin',
+    ]);
+});
+
+it('allows super admin to update guard name', function () {
+    Livewire::actingAs($this->superAdmin);
+
+    $newGuardName = 'api';
+
+    Livewire::test(EditRole::class, ['record' => $this->adminRole->id])
+        ->assertSuccessful()
+        ->fillForm([
+            'name' => 'Admin',
+            'guard_name' => $newGuardName,
+        ])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    // Verify the role was updated in the database
+    $this->assertDatabaseHas('roles', [
+        'id' => $this->adminRole->id,
+        'name' => 'Admin',
+        'guard_name' => $newGuardName,
+    ]);
+});
+
+// ------------------------------------------------------------------------------------------------
 // Role View Page Edit Button Tests
 // ------------------------------------------------------------------------------------------------
 
