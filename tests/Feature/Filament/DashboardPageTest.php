@@ -22,9 +22,8 @@ beforeEach(function () {
 // ------------------------------------------------------------------------------------------------
 
 it('redirects unauthenticated users to login page when accessing dashboard', function () {
-    $response = $this->get(route('filament.app.pages.dashboard'));
-
-    $response->assertRedirect(route('filament.app.auth.login'));
+    Livewire::test(Dashboard::class)
+        ->assertRedirect(route('filament.app.auth.login'));
 });
 
 it('allows super admin to access dashboard after authentication', function () {
