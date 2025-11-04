@@ -7,6 +7,7 @@ use BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles;
 use BezhanSalleh\FilamentShield\Resources\Roles\Pages\ViewRole;
 use Database\Seeders\RoleUserSeeder;
 use Database\Seeders\ShieldSeeder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Livewire;
 use Spatie\Permission\Models\Role;
 
@@ -237,6 +238,14 @@ it('denies regular user from viewing role details', function () {
         ->assertForbidden();
 });
 
+it('does not allow viewing a missing role record', function () {
+    Livewire::actingAs($this->superAdmin);
+
+    // Test access to a non-existent role's view page
+    $this->expectException(ModelNotFoundException::class);
+    Livewire::test(ViewRole::class, ['record' => 999999]);
+});
+
 // ------------------------------------------------------------------------------------------------
 // Role Edit Page Tests
 // ------------------------------------------------------------------------------------------------
@@ -290,6 +299,14 @@ it('denies regular user from editing role details', function () {
     // Test that regular user cannot edit role page
     Livewire::test(EditRole::class, ['record' => $this->userRole->id])
         ->assertForbidden();
+});
+
+it('does not allow editing a missing role record', function () {
+    Livewire::actingAs($this->superAdmin);
+
+    // Test access to a non-existent role's edit page
+    $this->expectException(ModelNotFoundException::class);
+    Livewire::test(EditRole::class, ['record' => 999999]);
 });
 
 // ------------------------------------------------------------------------------------------------
