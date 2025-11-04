@@ -57,7 +57,7 @@ it('allows regular user to access and view the list menu', function () {
 // Dashboard Menu Tests
 // ------------------------------------------------------------------------------------------------
 
-it('allows super admin to access dashboard with navbar using livewire', function () {
+it('allows super admin to access dashboard with navbar', function () {
     Livewire::actingAs($this->superAdmin);
 
     Livewire::test(Dashboard::class)
@@ -65,7 +65,7 @@ it('allows super admin to access dashboard with navbar using livewire', function
         ->assertSee('Dashboard');
 });
 
-it('allows admin to access dashboard with navbar using livewire', function () {
+it('allows admin to access dashboard with navbar', function () {
     Livewire::actingAs($this->admin);
 
     Livewire::test(Dashboard::class)
@@ -73,7 +73,7 @@ it('allows admin to access dashboard with navbar using livewire', function () {
         ->assertSee('Dashboard');
 });
 
-it('allows regular user to access dashboard with navbar using livewire', function () {
+it('allows regular user to access dashboard with navbar', function () {
     Livewire::actingAs($this->regularUser);
 
     Livewire::test(Dashboard::class)
@@ -85,7 +85,7 @@ it('allows regular user to access dashboard with navbar using livewire', functio
 // User Management Menu Tests
 // ------------------------------------------------------------------------------------------------
 
-it('allows super admin to access user management menu using livewire', function () {
+it('allows super admin to access user management menu', function () {
     Livewire::actingAs($this->superAdmin);
 
     Livewire::test(ListUsers::class)
@@ -93,7 +93,7 @@ it('allows super admin to access user management menu using livewire', function 
         ->assertSee('Users');
 });
 
-it('allows admin to access user management menu using livewire', function () {
+it('allows admin to access user management menu', function () {
     Livewire::actingAs($this->admin);
 
     Livewire::test(ListUsers::class)
@@ -101,7 +101,7 @@ it('allows admin to access user management menu using livewire', function () {
         ->assertSee('Users');
 });
 
-it('denies regular user access to user management menu using livewire', function () {
+it('denies regular user access to user management menu', function () {
     Livewire::actingAs($this->regularUser);
 
     Livewire::test(ListUsers::class)
@@ -112,7 +112,7 @@ it('denies regular user access to user management menu using livewire', function
 // Role Management Menu Tests
 // ------------------------------------------------------------------------------------------------
 
-it('allows super admin to access role management menu using livewire', function () {
+it('allows super admin to access role management menu', function () {
     Livewire::actingAs($this->superAdmin);
 
     Livewire::test(ListRoles::class)
@@ -120,14 +120,14 @@ it('allows super admin to access role management menu using livewire', function 
         ->assertSee('Roles');
 });
 
-it('denies admin access to role management menu using livewire', function () {
+it('denies admin access to role management menu', function () {
     Livewire::actingAs($this->admin);
 
     Livewire::test(ListRoles::class)
         ->assertForbidden();
 });
 
-it('denies regular user access to role management menu using livewire', function () {
+it('denies regular user access to role management menu', function () {
     Livewire::actingAs($this->regularUser);
 
     Livewire::test(ListRoles::class)
