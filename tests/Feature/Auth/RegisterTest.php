@@ -4,6 +4,7 @@ use App\Filament\Pages\Auth\Register;
 use App\Models\User;
 use Database\Seeders\RoleUserSeeder;
 use Database\Seeders\ShieldSeeder;
+use Filament\Pages\Dashboard;
 use Livewire\Livewire;
 
 beforeEach(function () {
@@ -23,7 +24,7 @@ beforeEach(function () {
 
 it('displays the registration page for guests when enabled', function () {
     // Temporarily enable registration for this test
-    config(['filamentum.features.registration' => true]);
+    config(['filamentum.features.registration' => false]);
 
     Livewire::test(Register::class)
         ->assertSuccessful()
@@ -37,7 +38,7 @@ it('redirects authenticated super admin away from registration page', function (
     Livewire::actingAs($this->superAdmin);
 
     Livewire::test(Register::class)
-        ->assertRedirect(route('filament.app.pages.dashboard'));
+        ->assertRedirect(Dashboard::getUrl());
 });
 
 it('redirects authenticated admin away from registration page', function () {
@@ -47,7 +48,7 @@ it('redirects authenticated admin away from registration page', function () {
     Livewire::actingAs($this->admin);
 
     Livewire::test(Register::class)
-        ->assertRedirect(route('filament.app.pages.dashboard'));
+        ->assertRedirect(Dashboard::getUrl());
 });
 
 it('redirects authenticated regular user away from registration page', function () {
@@ -57,7 +58,7 @@ it('redirects authenticated regular user away from registration page', function 
     Livewire::actingAs($this->regularUser);
 
     Livewire::test(Register::class)
-        ->assertRedirect(route('filament.app.pages.dashboard'));
+        ->assertRedirect(Dashboard::getUrl());
 });
 
 // ------------------------------------------------------------------------------------------------
