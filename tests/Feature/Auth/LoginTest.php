@@ -156,3 +156,103 @@ it('redirects to login after regular user logs out', function () {
     $redirectedDashboardResponse->assertStatus(302)
         ->assertRedirect(route('filament.app.auth.login'));
 });
+
+// ------------------------------------------------------------------------------------------------
+// Login Form Validation Tests
+// ------------------------------------------------------------------------------------------------
+
+it('validates that email is required', function () {
+    Livewire::test(\Filament\Auth\Pages\Login::class)
+        ->assertSuccessful()
+        ->fillForm([
+            'email' => '',
+            'password' => 'password',
+        ])
+        ->call('authenticate')
+        ->assertHasFormErrors(['email' => 'required']);
+});
+
+it('validates that password is required', function () {
+    Livewire::test(\Filament\Auth\Pages\Login::class)
+        ->assertSuccessful()
+        ->fillForm([
+            'email' => 'test@example.com',
+            'password' => '',
+        ])
+        ->call('authenticate')
+        ->assertHasFormErrors(['password' => 'required']);
+});
+
+it('validates that email must be valid', function () {
+    Livewire::test(\Filament\Auth\Pages\Login::class)
+        ->assertSuccessful()
+        ->fillForm([
+            'email' => 'invalid-email',
+            'password' => 'password',
+        ])
+        ->call('authenticate')
+        ->assertHasFormErrors(['email' => 'email']);
+});
+
+// ------------------------------------------------------------------------------------------------
+// Successful Login Tests
+// ------------------------------------------------------------------------------------------------
+
+it('allows super admin to login with valid credentials', function () {
+    Livewire::test(\Filament\Auth\Pages\Login::class)
+        ->assertSuccessful()
+        ->fillForm([
+            'email' => 'superadmin@filamentum.com',
+            'password' => 'password',
+        ])
+        ->call('authenticate')
+        ->assertHasNoFormErrors();
+});
+
+it('allows admin to login with valid credentials', function () {
+    Livewire::test(\Filament\Auth\Pages\Login::class)
+        ->assertSuccessful()
+        ->fillForm([
+            'email' => 'admin@filamentum.com',
+            'password' => 'password',
+        ])
+        ->call('authenticate')
+        ->assertHasNoFormErrors();
+});
+
+it('allows regular user to login with valid credentials', function () {
+    Livewire::test(\Filament\Auth\Pages\Login::class)
+        ->assertSuccessful()
+        ->fillForm([
+            'email' => 'user@filamentum.com',
+            'password' => 'password',
+        ])
+        ->call('authenticate')
+        ->assertHasNoFormErrors();
+});
+
+// ------------------------------------------------------------------------------------------------
+// Failed Login Tests
+// ------------------------------------------------------------------------------------------------
+
+it('rejects login with invalid credentials', function () {
+    Livewire::test(\Filament\Auth\Pages\Login::class)
+        ->assertSuccessful()
+        ->fillForm([
+            'email' => 'superadmin@filamentum.com',
+            'password' => 'wrong-password',
+        ])
+        ->call('authenticate')
+        ->assertHasFormErrors(['email']);
+});
+
+it('rejects login with non-existent user', function () {
+    Livewire::test(\Filament\Auth\Pages\Login::class)
+        ->assertSuccessful()
+        ->fillForm([
+            'email' => 'nonexistent@example.com',
+            'password' => 'password',
+        ])
+        ->call('authenticate')
+        ->assertHasFormErrors(['email']);
+});
