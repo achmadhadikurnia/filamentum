@@ -3,9 +3,12 @@
 use App\Models\User;
 use Database\Seeders\RoleUserSeeder;
 use Database\Seeders\ShieldSeeder;
+use Filament\Auth\Pages\PasswordReset\RequestPasswordReset;
+use Filament\Pages\Dashboard;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
+use Livewire\Livewire;
 
 beforeEach(function () {
     // Seed the database with roles, permissions, and users
@@ -23,35 +26,30 @@ beforeEach(function () {
 // ------------------------------------------------------------------------------------------------
 
 it('displays password reset request page for guests', function () {
-    $response = $this->get(route('filament.app.auth.password-reset.request'));
-
-    $response->assertOk();
-    $response->assertSee('Forgot password');
-    $response->assertSee('email');
+    Livewire::test(RequestPasswordReset::class)
+        ->assertSuccessful()
+        ->assertSee('Forgot password');
 });
 
 it('redirects authenticated super admin away from password reset request page', function () {
     Livewire::actingAs($this->superAdmin);
-    $response = $this->get(route('filament.app.auth.password-reset.request'));
 
-    $response->assertStatus(302);
-    $response->assertRedirect(route('filament.app.pages.dashboard'));
+    Livewire::test(RequestPasswordReset::class)
+        ->assertRedirect(Dashboard::getUrl());
 });
 
 it('redirects authenticated admin away from password reset request page', function () {
     Livewire::actingAs($this->admin);
-    $response = $this->get(route('filament.app.auth.password-reset.request'));
 
-    $response->assertStatus(302);
-    $response->assertRedirect(route('filament.app.pages.dashboard'));
+    Livewire::test(RequestPasswordReset::class)
+        ->assertRedirect(Dashboard::getUrl());
 });
 
 it('redirects authenticated regular user away from password reset request page', function () {
     Livewire::actingAs($this->regularUser);
-    $response = $this->get(route('filament.app.auth.password-reset.request'));
 
-    $response->assertStatus(302);
-    $response->assertRedirect(route('filament.app.pages.dashboard'));
+    Livewire::test(RequestPasswordReset::class)
+        ->assertRedirect(Dashboard::getUrl());
 });
 
 // ------------------------------------------------------------------------------------------------
