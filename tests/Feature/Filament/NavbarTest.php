@@ -26,7 +26,7 @@ beforeEach(function () {
 it('allows super admin to access and view the list menu', function () {
     Livewire::actingAs($this->superAdmin);
 
-    $response = $this->get(route('filament.app.pages.dashboard'));
+    $response = $this->get(Dashboard::getUrl());
 
     $response->assertSuccessful()
         ->assertSee('Dashboard')
@@ -37,7 +37,7 @@ it('allows super admin to access and view the list menu', function () {
 it('allows admin to access and view the list menu', function () {
     Livewire::actingAs($this->admin);
 
-    $response = $this->get(route('filament.app.pages.dashboard'));
+    $response = $this->get(Dashboard::getUrl());
 
     $response->assertSuccessful()
         ->assertSee('Dashboard')
@@ -47,7 +47,7 @@ it('allows admin to access and view the list menu', function () {
 it('allows regular user to access and view the list menu', function () {
     Livewire::actingAs($this->regularUser);
 
-    $response = $this->get(route('filament.app.pages.dashboard'));
+    $response = $this->get(Dashboard::getUrl());
 
     $response->assertSuccessful()
         ->assertSee('Dashboard');
