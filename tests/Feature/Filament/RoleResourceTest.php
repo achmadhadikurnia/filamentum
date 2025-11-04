@@ -153,6 +153,10 @@ it('validates role name max length', function () {
         ->assertHasFormErrors(['name' => 'max']);
 });
 
+// ------------------------------------------------------------------------------------------------
+// Role Creation Success Tests
+// ------------------------------------------------------------------------------------------------
+
 it('allows valid role creation', function () {
     Livewire::actingAs($this->superAdmin);
 
@@ -333,6 +337,64 @@ it('hides edit button for regular user on role list page', function () {
 });
 
 // ------------------------------------------------------------------------------------------------
+// Role View Page Edit Button Tests
+// ------------------------------------------------------------------------------------------------
+
+it('shows edit button for super admin on role view page and allows navigation to edit page', function () {
+    Livewire::actingAs($this->superAdmin);
+
+    // Check that super admin can see edit button on view page for all roles and can navigate to edit page
+    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
+        ->assertSuccessful()
+        ->assertActionExists('edit')
+        ->assertActionVisible('edit')
+        ->callAction('edit')
+        ->assertSuccessful();
+
+    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
+        ->assertSuccessful()
+        ->assertActionExists('edit')
+        ->assertActionVisible('edit')
+        ->callAction('edit')
+        ->assertSuccessful();
+
+    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
+        ->assertSuccessful()
+        ->assertActionExists('edit')
+        ->assertActionVisible('edit')
+        ->callAction('edit')
+        ->assertSuccessful();
+});
+
+it('hides edit button for admin on role view page', function () {
+    Livewire::actingAs($this->admin);
+
+    // Check that admin cannot see edit button on view page
+    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
+        ->assertForbidden();
+
+    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
+        ->assertForbidden();
+
+    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
+        ->assertForbidden();
+});
+
+it('hides edit button for regular user on role view page', function () {
+    Livewire::actingAs($this->regularUser);
+
+    // Check that regular user cannot see edit button on view page
+    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
+        ->assertForbidden();
+
+    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
+        ->assertForbidden();
+
+    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
+        ->assertForbidden();
+});
+
+// ------------------------------------------------------------------------------------------------
 // Role Update Form Validation Tests
 // ------------------------------------------------------------------------------------------------
 
@@ -410,15 +472,16 @@ it('allows super admin to update role name', function () {
     ]);
 });
 
-it('allows super admin to update guard name', function () {
+it('allows super admin to update role nand guard name', function () {
     Livewire::actingAs($this->superAdmin);
 
+    $newRoleName = 'New Admin';
     $newGuardName = 'api';
 
     Livewire::test(EditRole::class, ['record' => $this->adminRole->id])
         ->assertSuccessful()
         ->fillForm([
-            'name' => 'Admin',
+            'name' => $newRoleName,
             'guard_name' => $newGuardName,
         ])
         ->call('save')
@@ -427,67 +490,9 @@ it('allows super admin to update guard name', function () {
     // Verify the role was updated in the database
     $this->assertDatabaseHas('roles', [
         'id' => $this->adminRole->id,
-        'name' => 'Admin',
+        'name' => $newRoleName,
         'guard_name' => $newGuardName,
     ]);
-});
-
-// ------------------------------------------------------------------------------------------------
-// Role View Page Edit Button Tests
-// ------------------------------------------------------------------------------------------------
-
-it('shows edit button for super admin on role view page and allows navigation to edit page', function () {
-    Livewire::actingAs($this->superAdmin);
-
-    // Check that super admin can see edit button on view page for all roles and can navigate to edit page
-    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
-        ->assertSuccessful()
-        ->assertActionExists('edit')
-        ->assertActionVisible('edit')
-        ->callAction('edit')
-        ->assertSuccessful();
-
-    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
-        ->assertSuccessful()
-        ->assertActionExists('edit')
-        ->assertActionVisible('edit')
-        ->callAction('edit')
-        ->assertSuccessful();
-
-    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
-        ->assertSuccessful()
-        ->assertActionExists('edit')
-        ->assertActionVisible('edit')
-        ->callAction('edit')
-        ->assertSuccessful();
-});
-
-it('hides edit button for admin on role view page', function () {
-    Livewire::actingAs($this->admin);
-
-    // Check that admin cannot see edit button on view page
-    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
-        ->assertForbidden();
-
-    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
-        ->assertForbidden();
-
-    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
-        ->assertForbidden();
-});
-
-it('hides edit button for regular user on role view page', function () {
-    Livewire::actingAs($this->regularUser);
-
-    // Check that regular user cannot see edit button on view page
-    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
-        ->assertForbidden();
-
-    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
-        ->assertForbidden();
-
-    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
-        ->assertForbidden();
 });
 
 // ------------------------------------------------------------------------------------------------
