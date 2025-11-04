@@ -24,7 +24,6 @@ beforeEach(function () {
 it('redirects unauthenticated users to login page when accessing dashboard', function () {
     $response = $this->get(route('filament.app.pages.dashboard'));
 
-    $response->assertStatus(302);
     $response->assertRedirect(route('filament.app.auth.login'));
 });
 
