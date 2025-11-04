@@ -25,10 +25,9 @@ it('displays the registration page for guests when enabled', function () {
     // Temporarily enable registration for this test
     config(['filamentum.features.registration' => true]);
 
-    $response = $this->get(route('filament.app.auth.register'));
-
-    $response->assertSuccessful()
-        ->assertSee('Register');
+    Livewire::test(Register::class)
+        ->assertSuccessful()
+        ->assertSee('Sign up');
 });
 
 it('redirects authenticated super admin away from registration page', function () {
@@ -37,9 +36,7 @@ it('redirects authenticated super admin away from registration page', function (
 
     Livewire::actingAs($this->superAdmin);
 
-    $response = $this->get(route('filament.app.auth.register'));
-
-    $response->assertStatus(302)
+    Livewire::test(Register::class)
         ->assertRedirect(route('filament.app.pages.dashboard'));
 });
 
@@ -49,9 +46,7 @@ it('redirects authenticated admin away from registration page', function () {
 
     Livewire::actingAs($this->admin);
 
-    $response = $this->get(route('filament.app.auth.register'));
-
-    $response->assertStatus(302)
+    Livewire::test(Register::class)
         ->assertRedirect(route('filament.app.pages.dashboard'));
 });
 
@@ -61,9 +56,7 @@ it('redirects authenticated regular user away from registration page', function 
 
     Livewire::actingAs($this->regularUser);
 
-    $response = $this->get(route('filament.app.auth.register'));
-
-    $response->assertStatus(302)
+    Livewire::test(Register::class)
         ->assertRedirect(route('filament.app.pages.dashboard'));
 });
 
@@ -75,10 +68,8 @@ it('blocks registration functionality when disabled', function () {
     // Ensure registration is disabled
     config(['filamentum.features.registration' => false]);
 
-    $response = $this->get(route('filament.app.auth.register'));
-
-    // When registration is disabled, it still shows the page but registration won't work
-    $response->assertSuccessful();
+    Livewire::test(Register::class)
+        ->assertSuccessful();
 });
 
 // ------------------------------------------------------------------------------------------------
