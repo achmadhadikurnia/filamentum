@@ -3,6 +3,7 @@
 use App\Models\User;
 use Database\Seeders\RoleUserSeeder;
 use Database\Seeders\ShieldSeeder;
+use Filament\Auth\Pages\Login;
 use Filament\Pages\Dashboard;
 use Livewire\Livewire;
 
@@ -22,7 +23,7 @@ beforeEach(function () {
 // ------------------------------------------------------------------------------------------------
 
 it('displays the login page for guests', function () {
-    Livewire::test(\Filament\Auth\Pages\Login::class)
+    Livewire::test(Login::class)
         ->assertSuccessful()
         ->assertSee('Sign in');
 });
@@ -98,18 +99,15 @@ it('redirects to login after super admin logs out', function () {
 
     // Given: A user is logged in and can access their dashboard
     $dashboardResponse = $this->get(route('filament.app.pages.dashboard'));
-
     $dashboardResponse->assertSuccessful();
 
     // When: The user logs out
     $logoutResponse = $this->post(route('filament.app.auth.logout'));
-
     $logoutResponse->assertStatus(302);
     $this->assertGuest();
 
     // Then: The user is redirected to login when trying to access dashboard again
     $redirectedDashboardResponse = $this->get(route('filament.app.pages.dashboard'));
-
     $redirectedDashboardResponse->assertStatus(302)
         ->assertRedirect(route('filament.app.auth.login'));
 });
@@ -119,18 +117,15 @@ it('redirects to login after admin logs out', function () {
 
     // Given: A user is logged in and can access their dashboard
     $dashboardResponse = $this->get(route('filament.app.pages.dashboard'));
-
     $dashboardResponse->assertSuccessful();
 
     // When: The user logs out
     $logoutResponse = $this->post(route('filament.app.auth.logout'));
-
     $logoutResponse->assertStatus(302);
     $this->assertGuest();
 
     // Then: The user is redirected to login when trying to access dashboard again
     $redirectedDashboardResponse = $this->get(route('filament.app.pages.dashboard'));
-
     $redirectedDashboardResponse->assertStatus(302)
         ->assertRedirect(route('filament.app.auth.login'));
 });
@@ -140,18 +135,15 @@ it('redirects to login after regular user logs out', function () {
 
     // Given: A user is logged in and can access their dashboard
     $dashboardResponse = $this->get(route('filament.app.pages.dashboard'));
-
     $dashboardResponse->assertSuccessful();
 
     // When: The user logs out
     $logoutResponse = $this->post(route('filament.app.auth.logout'));
-
     $logoutResponse->assertStatus(302);
     $this->assertGuest();
 
     // Then: The user is redirected to login when trying to access dashboard again
     $redirectedDashboardResponse = $this->get(route('filament.app.pages.dashboard'));
-
     $redirectedDashboardResponse->assertStatus(302)
         ->assertRedirect(route('filament.app.auth.login'));
 });
@@ -161,7 +153,7 @@ it('redirects to login after regular user logs out', function () {
 // ------------------------------------------------------------------------------------------------
 
 it('validates that email is required', function () {
-    Livewire::test(\Filament\Auth\Pages\Login::class)
+    Livewire::test(Login::class)
         ->assertSuccessful()
         ->fillForm([
             'email' => '',
@@ -172,7 +164,7 @@ it('validates that email is required', function () {
 });
 
 it('validates that password is required', function () {
-    Livewire::test(\Filament\Auth\Pages\Login::class)
+    Livewire::test(Login::class)
         ->assertSuccessful()
         ->fillForm([
             'email' => 'test@example.com',
@@ -183,7 +175,7 @@ it('validates that password is required', function () {
 });
 
 it('validates that email must be valid', function () {
-    Livewire::test(\Filament\Auth\Pages\Login::class)
+    Livewire::test(Login::class)
         ->assertSuccessful()
         ->fillForm([
             'email' => 'invalid-email',
@@ -198,7 +190,7 @@ it('validates that email must be valid', function () {
 // ------------------------------------------------------------------------------------------------
 
 it('allows super admin to login with valid credentials', function () {
-    Livewire::test(\Filament\Auth\Pages\Login::class)
+    Livewire::test(Login::class)
         ->assertSuccessful()
         ->fillForm([
             'email' => 'superadmin@filamentum.com',
@@ -209,7 +201,7 @@ it('allows super admin to login with valid credentials', function () {
 });
 
 it('allows admin to login with valid credentials', function () {
-    Livewire::test(\Filament\Auth\Pages\Login::class)
+    Livewire::test(Login::class)
         ->assertSuccessful()
         ->fillForm([
             'email' => 'admin@filamentum.com',
@@ -220,7 +212,7 @@ it('allows admin to login with valid credentials', function () {
 });
 
 it('allows regular user to login with valid credentials', function () {
-    Livewire::test(\Filament\Auth\Pages\Login::class)
+    Livewire::test(Login::class)
         ->assertSuccessful()
         ->fillForm([
             'email' => 'user@filamentum.com',
@@ -235,7 +227,7 @@ it('allows regular user to login with valid credentials', function () {
 // ------------------------------------------------------------------------------------------------
 
 it('rejects login with invalid credentials', function () {
-    Livewire::test(\Filament\Auth\Pages\Login::class)
+    Livewire::test(Login::class)
         ->assertSuccessful()
         ->fillForm([
             'email' => 'superadmin@filamentum.com',
@@ -246,7 +238,7 @@ it('rejects login with invalid credentials', function () {
 });
 
 it('rejects login with non-existent user', function () {
-    Livewire::test(\Filament\Auth\Pages\Login::class)
+    Livewire::test(Login::class)
         ->assertSuccessful()
         ->fillForm([
             'email' => 'nonexistent@example.com',
