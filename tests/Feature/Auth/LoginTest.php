@@ -22,10 +22,9 @@ beforeEach(function () {
 // ------------------------------------------------------------------------------------------------
 
 it('displays the login page for guests', function () {
-    $response = $this->get(route('filament.app.auth.login'));
-
-    $response->assertSuccessful()
-        ->assertSee('Login');
+    Livewire::test(\Filament\Auth\Pages\Login::class)
+        ->assertSuccessful()
+        ->assertSee('Sign in');
 });
 
 it('redirects authenticated super admin away from login page', function () {
