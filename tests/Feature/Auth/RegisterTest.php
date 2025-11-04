@@ -23,18 +23,12 @@ beforeEach(function () {
 // ------------------------------------------------------------------------------------------------
 
 it('displays the registration page for guests when enabled', function () {
-    // Temporarily enable registration for this test
-    config(['filamentum.features.registration' => false]);
-
     Livewire::test(Register::class)
         ->assertSuccessful()
         ->assertSee('Sign up');
 });
 
 it('redirects authenticated super admin away from registration page', function () {
-    // Temporarily enable registration for this test
-    config(['filamentum.features.registration' => true]);
-
     Livewire::actingAs($this->superAdmin);
 
     Livewire::test(Register::class)
@@ -42,9 +36,6 @@ it('redirects authenticated super admin away from registration page', function (
 });
 
 it('redirects authenticated admin away from registration page', function () {
-    // Temporarily enable registration for this test
-    config(['filamentum.features.registration' => true]);
-
     Livewire::actingAs($this->admin);
 
     Livewire::test(Register::class)
@@ -52,9 +43,6 @@ it('redirects authenticated admin away from registration page', function () {
 });
 
 it('redirects authenticated regular user away from registration page', function () {
-    // Temporarily enable registration for this test
-    config(['filamentum.features.registration' => true]);
-
     Livewire::actingAs($this->regularUser);
 
     Livewire::test(Register::class)
@@ -62,25 +50,10 @@ it('redirects authenticated regular user away from registration page', function 
 });
 
 // ------------------------------------------------------------------------------------------------
-// Registration Feature Disabled Tests
-// ------------------------------------------------------------------------------------------------
-
-it('blocks registration functionality when disabled', function () {
-    // Ensure registration is disabled
-    config(['filamentum.features.registration' => false]);
-
-    Livewire::test(Register::class)
-        ->assertSuccessful();
-});
-
-// ------------------------------------------------------------------------------------------------
 // User Registration Tests
 // ------------------------------------------------------------------------------------------------
 
 it('allows valid user registration when enabled', function () {
-    // Temporarily enable registration for this test
-    config(['filamentum.features.registration' => true]);
-
     Livewire::test(Register::class)
         ->assertSuccessful()
         ->fillForm([
@@ -105,9 +78,6 @@ it('allows valid user registration when enabled', function () {
 });
 
 it('validates required fields during registration', function () {
-    // Temporarily enable registration for this test
-    config(['filamentum.features.registration' => true]);
-
     Livewire::test(Register::class)
         ->assertSuccessful()
         ->fillForm([
@@ -121,9 +91,6 @@ it('validates required fields during registration', function () {
 });
 
 it('validates email format during registration', function () {
-    // Temporarily enable registration for this test
-    config(['filamentum.features.registration' => true]);
-
     Livewire::test(Register::class)
         ->assertSuccessful()
         ->fillForm([
@@ -137,9 +104,6 @@ it('validates email format during registration', function () {
 });
 
 it('validates password confirmation during registration', function () {
-    // Temporarily enable registration for this test
-    config(['filamentum.features.registration' => true]);
-
     Livewire::test(Register::class)
         ->assertSuccessful()
         ->fillForm([
