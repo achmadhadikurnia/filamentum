@@ -104,7 +104,7 @@ it('displays password reset form for guests with valid token', function () {
 
     // Get the reset token from the notification
     $token = null;
-    Notification::assertSentTo($user, FilamentResetPasswordNotification::class, function ($notification, $channels) use ($user, &$token) {
+    Notification::assertSentTo($user, FilamentResetPasswordNotification::class, function ($notification) use (&$token) {
         $token = $notification->token;
         return true;
     });
@@ -135,7 +135,7 @@ it('validates password reset form fields', function () {
 
     // Get the reset token from the notification
     $token = null;
-    Notification::assertSentTo($user, FilamentResetPasswordNotification::class, function ($notification, $channels) use ($user, &$token) {
+    Notification::assertSentTo($user, FilamentResetPasswordNotification::class, function ($notification) use (&$token) {
         $token = $notification->token;
         return true;
     });
@@ -172,7 +172,7 @@ it('allows successful password reset with valid data', function () {
 
     // Get the reset token from the notification
     $token = null;
-    Notification::assertSentTo($user, FilamentResetPasswordNotification::class, function ($notification, $channels) use ($user, &$token) {
+    Notification::assertSentTo($user, FilamentResetPasswordNotification::class, function ($notification) use (&$token) {
         $token = $notification->token;
         return true;
     });
