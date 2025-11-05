@@ -57,7 +57,7 @@ it('denies regular user access to role list', function () {
 // Role List Page Create Button Tests
 // ------------------------------------------------------------------------------------------------
 
-it('shows create button for super admin on role list page and allows navigation to create page', function () {
+it('shows create button for super admin on role list page', function () {
     Livewire::actingAs($this->superAdmin);
 
     Livewire::test(ListRoles::class)
@@ -314,10 +314,10 @@ it('does not allow editing a missing role record', function () {
 // Role List Page Edit Button Tests
 // ------------------------------------------------------------------------------------------------
 
-it('shows edit button for super admin on role list page and allows navigation to edit page', function () {
+it('shows edit button for super admin on role list page', function () {
     Livewire::actingAs($this->superAdmin);
 
-    // Check that super admin can see edit button for all roles and can navigate to edit page
+    // Check that super admin can see edit button for all roles
     Livewire::test(ListRoles::class)
         ->assertSuccessful()
         ->assertTableActionExists('edit')
@@ -358,10 +358,10 @@ it('hides edit button for regular user on role list page', function () {
 // Role View Page Edit Button Tests
 // ------------------------------------------------------------------------------------------------
 
-it('shows edit button for super admin on role view page and allows navigation to edit page', function () {
+it('shows edit button for super admin on role view page', function () {
     Livewire::actingAs($this->superAdmin);
 
-    // Check that super admin can see edit button on view page for all roles and can navigate to edit page
+    // Check that super admin can see edit button on view page for all roles
     Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
         ->assertSuccessful()
         ->assertActionExists('edit')
