@@ -170,7 +170,8 @@ it('allows valid role creation', function () {
             'guard_name' => 'web',
         ])
         ->call('create')
-        ->assertHasNoFormErrors();
+        ->assertHasNoFormErrors()
+        ->assertSuccessful();
 
     // Verify the role was created in the database
     $this->assertDatabaseHas('roles', [
@@ -473,7 +474,8 @@ it('allows super admin to update role name', function () {
             'guard_name' => 'web',
         ])
         ->call('save')
-        ->assertHasNoFormErrors();
+        ->assertHasNoFormErrors()
+        ->assertSuccessful();
 
     // Verify the role was updated in the database
     $this->assertDatabaseHas('roles', [
@@ -502,7 +504,8 @@ it('allows super admin to update role nand guard name', function () {
             'guard_name' => $newGuardName,
         ])
         ->call('save')
-        ->assertHasNoFormErrors();
+        ->assertHasNoFormErrors()
+        ->assertSuccessful();
 
     // Verify the role was updated in the database
     $this->assertDatabaseHas('roles', [
