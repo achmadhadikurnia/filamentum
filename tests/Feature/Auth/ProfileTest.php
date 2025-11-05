@@ -18,13 +18,12 @@ beforeEach(function () {
 });
 
 // ------------------------------------------------------------------------------------------------
-// Profile Access Tests
+// Profile Page Access Tests
 // ------------------------------------------------------------------------------------------------
 
 it('redirects unauthenticated users to login when accessing profile', function () {
-    $response = $this->get(route('filament.app.auth.profile'));
-
-    $response->assertRedirect(route('filament.app.auth.login'));
+    $this->get(EditProfile::getUrl())
+        ->assertRedirect(route('filament.app.auth.login'));
 });
 
 it('displays the profile page for super admin', function () {
@@ -49,4 +48,91 @@ it('displays the profile page for regular user', function () {
     Livewire::test(EditProfile::class)
         ->assertSuccessful()
         ->assertSee('Profile');
+});
+
+// ------------------------------------------------------------------------------------------------
+// Profile Validation Tests
+// ------------------------------------------------------------------------------------------------
+
+it('validates required name field during profile update', function () {
+    Livewire::actingAs($this->superAdmin);
+
+    Livewire::test(EditProfile::class)
+        ->assertSuccessful()
+        ->fillForm([
+            'name' => '',
+            'currentPassword' => 'password',
+        ])
+        ->call('save')
+        ->assertHasFormErrors(['name']);
+});
+
+// ------------------------------------------------------------------------------------------------
+// Profile Update Tests
+// ------------------------------------------------------------------------------------------------
+
+it('allows super admin to update their profile name', function () {
+    Livewire::actingAs($this->superAdmin);
+
+    $newName = 'Updated Super Admin';
+
+    Livewire::test(EditProfile::class)
+        ->assertSuccessful()
+        ->fillForm([
+            'name' => $newName,
+            'currentPassword' => 'password',
+        ])
+        ->call('save')
+        ->assertHasNoFormErrors()
+        ->assertSuccessful();
+
+    // Verify the user name was updated in the database
+    $this->assertDatabaseHas('users', [
+        'id' => $this->superAdmin->id,
+        'name' => $newName,
+    ]);
+});
+
+it('allows admin to update their profile name', function () {
+    Livewire::actingAs($this->admin);
+
+    $newName = 'Updated Admin';
+
+    Livewire::test(EditProfile::class)
+        ->assertSuccessful()
+        ->fillForm([
+            'name' => $newName,
+            'currentPassword' => 'password',
+        ])
+        ->call('save')
+        ->assertHasNoFormErrors()
+        ->assertSuccessful();
+
+    // Verify the user name was updated in the database
+    $this->assertDatabaseHas('users', [
+        'id' => $this->admin->id,
+        'name' => $newName,
+    ]);
+});
+
+it('allows regular user to update their profile name', function () {
+    Livewire::actingAs($this->regularUser);
+
+    $newName = 'Updated User';
+
+    Livewire::test(EditProfile::class)
+        ->assertSuccessful()
+        ->fillForm([
+            'name' => $newName,
+            'currentPassword' => 'password',
+        ])
+        ->call('save')
+        ->assertHasNoFormErrors()
+        ->assertSuccessful();
+
+    // Verify the user name was updated in the database
+    $this->assertDatabaseHas('users', [
+        'id' => $this->regularUser->id,
+        'name' => $newName,
+    ]);
 });
