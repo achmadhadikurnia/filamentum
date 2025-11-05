@@ -198,5 +198,6 @@ it('allows successful password reset with valid data', function () {
             'password' => $newPassword,
         ])
         ->call('authenticate')
-        ->assertHasNoFormErrors();
+        ->assertHasNoFormErrors()
+        ->assertRedirect(Dashboard::getUrl());
 });
