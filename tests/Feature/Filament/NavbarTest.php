@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use App\Filament\Resources\Users\Pages\ListUsers;
+use App\Models\User;
 use BezhanSalleh\FilamentShield\Resources\Roles\Pages\ListRoles;
 use Database\Seeders\RoleUserSeeder;
 use Database\Seeders\ShieldSeeder;

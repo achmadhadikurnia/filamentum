@@ -106,13 +106,14 @@ it('displays password reset form for guests with valid token', function () {
     $token = null;
     Notification::assertSentTo($user, FilamentResetPasswordNotification::class, function ($notification) use (&$token) {
         $token = $notification->token;
+
         return true;
     });
 
     // Now test accessing the reset password form with the valid token using Livewire
     Livewire::test(FilamentResetPassword::class, [
         'email' => $user->email,
-        'token' => $token
+        'token' => $token,
     ])
         ->assertSuccessful()
         ->assertSee('Reset password');
@@ -137,18 +138,19 @@ it('validates password reset form fields', function () {
     $token = null;
     Notification::assertSentTo($user, FilamentResetPasswordNotification::class, function ($notification) use (&$token) {
         $token = $notification->token;
+
         return true;
     });
 
     // Test password reset form validation using Livewire
     Livewire::test(FilamentResetPassword::class, [
         'email' => $user->email,
-        'token' => $token
+        'token' => $token,
     ])
         ->assertSuccessful()
         ->fillForm([
             'password' => '', // Empty password
-            'passwordConfirmation' => '' // Empty confirmation
+            'passwordConfirmation' => '', // Empty confirmation
         ])
         ->call('resetPassword')
         ->assertHasFormErrors(['password']);
@@ -174,18 +176,19 @@ it('allows successful password reset with valid data', function () {
     $token = null;
     Notification::assertSentTo($user, FilamentResetPasswordNotification::class, function ($notification) use (&$token) {
         $token = $notification->token;
+
         return true;
     });
 
     // Test successful password reset using Livewire
     Livewire::test(FilamentResetPassword::class, [
         'email' => $user->email,
-        'token' => $token
+        'token' => $token,
     ])
         ->assertSuccessful()
         ->fillForm([
             'password' => $newPassword,
-            'passwordConfirmation' => $newPassword
+            'passwordConfirmation' => $newPassword,
         ])
         ->call('resetPassword')
         ->assertHasNoFormErrors();

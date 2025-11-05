@@ -3,7 +3,6 @@
 use App\Models\User;
 use Database\Seeders\RoleUserSeeder;
 use Database\Seeders\ShieldSeeder;
-use Filament\Auth\Pages\Login;
 use Filament\Pages\Dashboard;
 use Livewire\Livewire;
 
