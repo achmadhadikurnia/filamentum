@@ -189,7 +189,8 @@ it('allows super admin to login with valid credentials', function () {
             'password' => 'password',
         ])
         ->call('authenticate')
-        ->assertHasNoFormErrors();
+        ->assertHasNoFormErrors()
+        ->assertRedirect(Dashboard::getUrl());
 });
 
 it('allows admin to login with valid credentials', function () {
@@ -200,7 +201,8 @@ it('allows admin to login with valid credentials', function () {
             'password' => 'password',
         ])
         ->call('authenticate')
-        ->assertHasNoFormErrors();
+        ->assertHasNoFormErrors()
+        ->assertRedirect(Dashboard::getUrl());
 });
 
 it('allows regular user to login with valid credentials', function () {
@@ -211,7 +213,8 @@ it('allows regular user to login with valid credentials', function () {
             'password' => 'password',
         ])
         ->call('authenticate')
-        ->assertHasNoFormErrors();
+        ->assertHasNoFormErrors()
+        ->assertRedirect(Dashboard::getUrl());
 });
 
 // ------------------------------------------------------------------------------------------------
