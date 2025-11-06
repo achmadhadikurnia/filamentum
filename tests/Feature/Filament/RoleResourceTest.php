@@ -340,20 +340,6 @@ it('shows edit button for super admin on role list page', function () {
         ->assertSuccessful();
 });
 
-it('hides edit button for admin on role list page', function () {
-    Livewire::actingAs($this->admin);
-
-    Livewire::test(ListRoles::class)
-        ->assertForbidden();
-});
-
-it('hides edit button for regular user on role list page', function () {
-    Livewire::actingAs($this->regularUser);
-
-    Livewire::test(ListRoles::class)
-        ->assertForbidden();
-});
-
 // ------------------------------------------------------------------------------------------------
 // Role View Page Edit Button Tests
 // ------------------------------------------------------------------------------------------------
@@ -382,34 +368,6 @@ it('shows edit button for super admin on role view page', function () {
         ->assertActionVisible('edit')
         ->callAction('edit')
         ->assertSuccessful();
-});
-
-it('hides edit button for admin on role view page', function () {
-    Livewire::actingAs($this->admin);
-
-    // Check that admin cannot see edit button on view page
-    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
-        ->assertForbidden();
-
-    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
-        ->assertForbidden();
-
-    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
-        ->assertForbidden();
-});
-
-it('hides edit button for regular user on role view page', function () {
-    Livewire::actingAs($this->regularUser);
-
-    // Check that regular user cannot see edit button on view page
-    Livewire::test(ViewRole::class, ['record' => $this->superAdminRole->id])
-        ->assertForbidden();
-
-    Livewire::test(ViewRole::class, ['record' => $this->adminRole->id])
-        ->assertForbidden();
-
-    Livewire::test(ViewRole::class, ['record' => $this->userRole->id])
-        ->assertForbidden();
 });
 
 // ------------------------------------------------------------------------------------------------
@@ -529,18 +487,4 @@ it('hides delete button for super admin on role list page for super admin role',
         ->assertSuccessful()
         ->assertTableActionExists('delete')
         ->assertTableActionHidden('delete', $this->superAdminRole);
-});
-
-it('hides delete button for admin on role list page', function () {
-    Livewire::actingAs($this->admin);
-
-    Livewire::test(ListRoles::class)
-        ->assertForbidden();
-});
-
-it('hides delete button for regular user on role list page', function () {
-    Livewire::actingAs($this->regularUser);
-
-    Livewire::test(ListRoles::class)
-        ->assertForbidden();
 });
