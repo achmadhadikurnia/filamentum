@@ -527,6 +527,7 @@ it('hides delete button for super admin on role list page for super admin role',
     // Check that super admin cannot see delete button for super admin role
     Livewire::test(ListRoles::class)
         ->assertSuccessful()
+        ->assertTableActionExists('delete')
         ->assertTableActionHidden('delete', $this->superAdminRole);
 });
 
