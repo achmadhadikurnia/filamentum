@@ -5,9 +5,7 @@ namespace App\Filament\Resources\Users\Tables;
 use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
@@ -28,7 +26,7 @@ class UsersTable
                 IconColumn::make('email_verified_at')
                     ->label('Verified')
                     ->boolean()
-                    ->tooltip(fn($record) => $record->email_verified_at?->format('Y-m-d H:i:s'))
+                    ->tooltip(fn ($record) => $record->email_verified_at?->format('Y-m-d H:i:s'))
                     ->sortable(),
                 TextColumn::make('roles.name')
                     ->label('Roles')
@@ -61,7 +59,7 @@ class UsersTable
                         ->label('Verify Email')
                         ->icon('heroicon-o-check-badge')
                         ->color('success')
-                        ->visible(fn(User $record): bool => $record->email_verified_at === null)
+                        ->visible(fn (User $record): bool => $record->email_verified_at === null)
                         ->requiresConfirmation()
                         ->action(function (User $record): void {
                             $record->update(['email_verified_at' => now()]);
