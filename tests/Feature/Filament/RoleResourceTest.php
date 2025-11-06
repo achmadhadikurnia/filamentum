@@ -487,7 +487,7 @@ it('allows super admin to update role name', function () {
     // Verify the old name no longer exists
     $this->assertDatabaseMissing('roles', [
         'id' => $this->adminRole->id,
-        'name' => 'Admin',
+        'name' => $this->adminRole->name,
     ]);
 });
 
