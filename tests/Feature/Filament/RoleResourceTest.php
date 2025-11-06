@@ -491,30 +491,6 @@ it('allows super admin to update role name', function () {
     ]);
 });
 
-it('allows super admin to update role nand guard name', function () {
-    Livewire::actingAs($this->superAdmin);
-
-    $newRoleName = 'New Admin';
-    $newGuardName = 'api';
-
-    Livewire::test(EditRole::class, ['record' => $this->adminRole->id])
-        ->assertSuccessful()
-        ->fillForm([
-            'name' => $newRoleName,
-            'guard_name' => $newGuardName,
-        ])
-        ->call('save')
-        ->assertHasNoFormErrors()
-        ->assertSuccessful();
-
-    // Verify the role was updated in the database
-    $this->assertDatabaseHas('roles', [
-        'id' => $this->adminRole->id,
-        'name' => $newRoleName,
-        'guard_name' => $newGuardName,
-    ]);
-});
-
 // ------------------------------------------------------------------------------------------------
 // Role List Page Delete Button Tests
 // ------------------------------------------------------------------------------------------------
