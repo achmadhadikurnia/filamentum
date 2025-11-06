@@ -69,11 +69,6 @@ class UsersTable
                 ])
                     ->icon('heroicon-o-ellipsis-vertical')
                     ->tooltip('Actions'),
-            ])
-            ->toolbarActions([
-                // BulkActionGroup::make([
-                //     DeleteBulkAction::make(),
-                // ]),
             ]);
     }
 }
