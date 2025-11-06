@@ -488,3 +488,32 @@ it('hides delete button for super admin on role list page for super admin role',
         ->assertTableActionExists('delete')
         ->assertTableActionHidden('delete', $this->superAdminRole);
 });
+
+// ------------------------------------------------------------------------------------------------
+// Role Edit Page Delete Button Tests
+// ------------------------------------------------------------------------------------------------
+
+it('shows delete button for super admin on role edit page for admin and user roles and allows deletion', function () {
+    Livewire::actingAs($this->superAdmin);
+
+    // Check that super admin can see delete button for admin roles and can delete them
+    Livewire::test(EditRole::class, ['record' => $this->adminRole->id])
+        ->assertSuccessful()
+        ->assertActionExists('delete')
+        ->assertActionVisible('delete')
+        ->callAction('delete')
+        ->assertHasNoErrors();
+
+    // Verify admin role was deleted
+    $this->assertDatabaseMissing('roles', ['id' => $this->adminRole->id]);
+});
+
+it('hides delete button for super admin on role edit page for super admin role', function () {
+    Livewire::actingAs($this->superAdmin);
+
+    // Check that super admin cannot see delete button for super admin role
+    Livewire::test(EditRole::class, ['record' => $this->superAdminRole->id])
+        ->assertSuccessful()
+        ->assertActionExists('delete')
+        ->assertActionHidden('delete');
+});
