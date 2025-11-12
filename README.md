@@ -170,31 +170,31 @@ For more information about Laravel Octane configuration and usage, please refer 
 Filamentum comes with several pre-installed packages to help you build your application:
 
 - [laravel/framework](https://github.com/laravel/framework) v12 - The core Laravel framework
-- [laravel/octane](https://github.com/laravel/octane) v2 - Supercharge your Laravel application's performance with high-powered application servers
-- [laravel/boost](https://github.com/laravel/boost) v1 - Laravel Boost for enhanced AI-assisted development experience with Laravel
-- [laravel/sail](https://github.com/laravel/sail) v1 - Docker files for running a basic Laravel application
-- [laravel/telescope](https://github.com/laravel/telescope) v5 - An elegant debug assistant for the Laravel framework
-- [filament/filament](https://github.com/filamentphp/filament) v4 - A powerful open source UI framework for Laravel to build admin panels & apps fast
-- [bezhansalleh/filament-shield](https://github.com/bezhanSalleh/filament-shield) v4 - Easily manage roles & permissions for Filament's resources, pages & widgets through spatie/laravel-permission
-- [spatie/laravel-activitylog](https://github.com/spatie/laravel-activitylog) v4 - Log activity inside your Laravel app
-- [spatie/laravel-backup](https://github.com/spatie/laravel-backup) v9 - A package to backup your application and database
-- [spatie/laravel-permission](https://github.com/spatie/laravel-permission) v6 - Permission handling for Laravel with roles and permissions management
-- [spatie/laravel-query-builder](https://github.com/spatie/laravel-query-builder) v6 - Easily build Eloquent queries from API requests
-- [pestphp/pest](https://github.com/pestphp/pest) v4 - An elegant PHP testing framework with a focus on simplicity, meticulously designed to bring back the joy of testing in PHP
-- [pestphp/pest-plugin-browser](https://github.com/pestphp/pest-plugin-browser) v4 - Browser testing plugin for Pest that enables testing web applications through a real browser using Playwright
-- [barryvdh/laravel-debugbar](https://github.com/barryvdh/laravel-debugbar) v3 - Debugbar for Laravel (Integrates PHP Debug Bar)
-- [barryvdh/laravel-ide-helper](https://github.com/barryvdh/laravel-ide-helper) v3 - IDE Helper for generating helper files for Laravel facades and adding PHPDocs
+- [laravel/octane](https://github.com/laravel/octane) v2 - High-performance Laravel application server
+- [laravel/boost](https://github.com/laravel/boost) v1 - AI-assisted Laravel development experience
+- [laravel/sail](https://github.com/laravel/sail) v1 - Docker setup for Laravel applications
+- [laravel/telescope](https://github.com/laravel/telescope) v5 - Debug assistant for Laravel
+- [filament/filament](https://github.com/filamentphp/filament) v4 - Admin panel & app UI framework
+- [bezhansalleh/filament-shield](https://github.com/bezhanSalleh/filament-shield) v4 - Role & permission management
+- [spatie/laravel-activitylog](https://github.com/spatie/laravel-activitylog) v4 - Activity logging for Laravel
+- [spatie/laravel-backup](https://github.com/spatie/laravel-backup) v9 - Application & database backup tool
+- [spatie/laravel-permission](https://github.com/spatie/laravel-permission) v6 - Roles and permissions management
+- [spatie/laravel-query-builder](https://github.com/spatie/laravel-query-builder) v6 - Build Eloquent queries from API requests
+- [pestphp/pest](https://github.com/pestphp/pest) v4 - Elegant PHP testing framework
+- [pestphp/pest-plugin-browser](https://github.com/pestphp/pest-plugin-browser) v4 - Browser testing for Pest
+- [barryvdh/laravel-debugbar](https://github.com/barryvdh/laravel-debugbar) v3 - Debug bar for Laravel
+- [barryvdh/laravel-ide-helper](https://github.com/barryvdh/laravel-ide-helper) v3 - IDE helper files for Laravel
 
 ## Recommended Additional Packages
 
 To further enhance your Laravel application, consider adding these recommended packages:
 
-- [laravel/horizon](https://github.com/laravel/horizon) - Dashboard and code-driven configuration for Laravel queues
-- [laravel/nightwatch](https://github.com/laravel/nightwatch) - Laravel Nightwatch for application monitoring and performance insights
-- [laravel/passport](https://github.com/laravel/passport) - OAuth2 server and API authentication package that is simple and enjoyable to use
-- [laravel/sanctum](https://github.com/laravel/sanctum) v - Featherweight authentication system for SPAs and simple APIs
-- [laravel/socialite](https://github.com/laravel/socialite) - Laravel Socialite for OAuth authentication with social networks
-- [sentry/sentry-laravel](https://github.com/getsentry/sentry-laravel) - The official Laravel SDK for Sentry error tracking and monitoring
+- [laravel/horizon](https://github.com/laravel/horizon) - Dashboard for Laravel queues
+- [laravel/nightwatch](https://github.com/laravel/nightwatch) - Application monitoring tool
+- [laravel/passport](https://github.com/laravel/passport) - OAuth2 server for API authentication
+- [laravel/sanctum](https://github.com/laravel/sanctum) - Authentication for SPAs and APIs
+- [laravel/socialite](https://github.com/laravel/socialite) - OAuth authentication with social networks
+- [sentry/sentry-laravel](https://github.com/getsentry/sentry-laravel) - Error tracking and monitoring
 
 Refer to each package's documentation for specific installation and configuration instructions.
 
