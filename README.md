@@ -9,7 +9,7 @@
 
 ## About Filamentum
 
-Filamentum is a Laravel 12 starter kit with the Filament admin panel and essential packages pre-installed.
+Filamentum is a Laravel starter kit with the Filament admin panel and essential packages pre-installed.
 
 
 ## Installation
