@@ -14,22 +14,22 @@ class RolePolicy
 
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ViewAny:Role');
+        return $authUser->can('ViewAny:RoleResource');
     }
 
     public function view(AuthUser $authUser, Role $role): bool
     {
-        return $authUser->can('View:Role');
+        return $authUser->can('View:RoleResource');
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('Create:Role');
+        return $authUser->can('Create:RoleResource');
     }
 
     public function update(AuthUser $authUser, Role $role): bool
     {
-        return $authUser->can('Update:Role');
+        return $authUser->can('Update:RoleResource');
     }
 
     public function delete(AuthUser $authUser, Role $role): bool
@@ -39,12 +39,12 @@ class RolePolicy
             return false;
         }
 
-        return $authUser->can('Delete:Role');
+        return $authUser->can('Delete:RoleResource');
     }
 
     public function restore(AuthUser $authUser, Role $role): bool
     {
-        return $authUser->can('Restore:Role');
+        return $authUser->can('Restore:RoleResource');
     }
 
     public function forceDelete(AuthUser $authUser, Role $role): bool
@@ -54,17 +54,17 @@ class RolePolicy
             return false;
         }
 
-        return $authUser->can('ForceDelete:Role');
+        return $authUser->can('ForceDelete:RoleResource');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ForceDeleteAny:Role');
+        return $authUser->can('ForceDeleteAny:RoleResource');
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return $authUser->can('RestoreAny:Role');
+        return $authUser->can('RestoreAny:RoleResource');
     }
 
     public function replicate(AuthUser $authUser, Role $role): bool
@@ -74,11 +74,11 @@ class RolePolicy
             return false;
         }
 
-        return $authUser->can('Replicate:Role');
+        return $authUser->can('Replicate:RoleResource');
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('Reorder:Role');
+        return $authUser->can('Reorder:RoleResource');
     }
 }
