@@ -7,11 +7,9 @@ use App\Filament\Resources\Users\Pages\ViewUser;
 use App\Models\User;
 use Database\Seeders\RoleUserSeeder;
 use Database\Seeders\ShieldSeeder;
-use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Livewire;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\PermissionRegistrar;
 
 beforeEach(function () {
     // Seed the database with roles, permissions, and users
