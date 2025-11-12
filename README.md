@@ -197,7 +197,6 @@ Filamentum comes with several pre-installed packages to help you build your appl
 - [spatie/laravel-permission](https://github.com/spatie/laravel-permission) v6 - Roles and permissions management
 - [spatie/laravel-query-builder](https://github.com/spatie/laravel-query-builder) v6 - Build Eloquent queries from API requests
 - [pestphp/pest](https://github.com/pestphp/pest) v4 - Elegant PHP testing framework
-- [pestphp/pest-plugin-browser](https://github.com/pestphp/pest-plugin-browser) v4 - Browser testing for Pest
 - [barryvdh/laravel-debugbar](https://github.com/barryvdh/laravel-debugbar) v3 - Debug bar for Laravel
 - [barryvdh/laravel-ide-helper](https://github.com/barryvdh/laravel-ide-helper) v3 - IDE helper files for Laravel
 
