@@ -165,6 +165,22 @@ php artisan octane:start
 
 For more information about Laravel Octane configuration and usage, please refer to the [official Laravel Octane documentation](https://laravel.com/docs/12.x/octane).
 
+## Running Tests
+
+You can run the test suite using Composer:
+
+```bash
+composer test
+```
+
+This will execute all tests using PestPHP, which is configured as the default testing framework for this project.
+
+Alternatively, you can run tests directly using the Artisan command:
+
+```bash
+php artisan test
+```
+
 ## Installed Packages
 
 Filamentum comes with several pre-installed packages to help you build your application:
