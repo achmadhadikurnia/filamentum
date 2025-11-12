@@ -169,6 +169,7 @@ For more information about Laravel Octane configuration and usage, please refer 
 
 Filamentum comes with several pre-installed packages to help you build your application:
 
+- [laravel/framework](https://github.com/laravel/framework) v12 - The core Laravel framework
 - [laravel/octane](https://github.com/laravel/octane) v2 - Supercharge your Laravel application's performance with high-powered application servers
 - [laravel/boost](https://github.com/laravel/boost) v1 - Laravel Boost for enhanced AI-assisted development experience with Laravel
 - [laravel/sail](https://github.com/laravel/sail) v1 - Docker files for running a basic Laravel application
