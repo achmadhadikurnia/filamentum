@@ -88,7 +88,7 @@ class ShieldSeeder extends Seeder
 
                 if (! blank($rolePlusPermission['permissions'])) {
                     $permissionModels = collect($rolePlusPermission['permissions'])
-                        ->map(fn($permission) => Permission::firstOrCreate([
+                        ->map(fn ($permission) => Permission::firstOrCreate([
                             'name' => $permission,
                             'guard_name' => $rolePlusPermission['guard_name'],
                         ]))
