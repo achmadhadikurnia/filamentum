@@ -2,11 +2,11 @@
 
 namespace App\Filament\Resources\Roles;
 
-use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use App\Filament\Resources\Roles\Pages\CreateRole;
 use App\Filament\Resources\Roles\Pages\EditRole;
 use App\Filament\Resources\Roles\Pages\ListRoles;
 use App\Filament\Resources\Roles\Pages\ViewRole;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use BezhanSalleh\FilamentShield\Traits\HasShieldFormComponents;
 use BezhanSalleh\PluginEssentials\Concerns\Resource as Essentials;
@@ -52,7 +52,7 @@ class RoleResource extends Resource
                                     ->unique(
                                         ignoreRecord: true,
                                         /** @phpstan-ignore-next-line */
-                                        modifyRuleUsing: fn(Unique $rule): Unique => Utils::isTenancyEnabled() ? $rule->where(Utils::getTenantModelForeignKey(), Filament::getTenant()?->id) : $rule
+                                        modifyRuleUsing: fn (Unique $rule): Unique => Utils::isTenancyEnabled() ? $rule->where(Utils::getTenantModelForeignKey(), Filament::getTenant()?->id) : $rule
                                     )
                                     ->required()
                                     ->maxLength(255),
@@ -67,9 +67,9 @@ class RoleResource extends Resource
                                     ->label('Team')
                                     /** @phpstan-ignore-next-line */
                                     ->default(Filament::getTenant()?->id)
-                                    ->options(fn(): array => in_array(Utils::getTenantModel(), [null, '', '0'], true) ? [] : Utils::getTenantModel()::pluck('name', 'id')->toArray())
-                                    ->visible(fn(): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled())
-                                    ->dehydrated(fn(): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled()),
+                                    ->options(fn (): array => in_array(Utils::getTenantModel(), [null, '', '0'], true) ? [] : Utils::getTenantModel()::pluck('name', 'id')->toArray())
+                                    ->visible(fn (): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled())
+                                    ->dehydrated(fn (): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled()),
                                 static::getSelectAllFormComponent(),
 
                             ])
@@ -91,7 +91,7 @@ class RoleResource extends Resource
                 TextColumn::make('name')
                     ->label('Name')
                     ->weight(FontWeight::Medium)
-                    ->formatStateUsing(fn(string $state): string => Str::headline($state))
+                    ->formatStateUsing(fn (string $state): string => Str::headline($state))
                     ->searchable(),
                 TextColumn::make('guard_name')
                     ->label('Guard Name')
@@ -101,9 +101,9 @@ class RoleResource extends Resource
                     ->label('Team')
                     ->default('Global')
                     ->badge()
-                    ->color(fn(mixed $state): string => str($state)->contains('Global') ? 'gray' : 'primary')
+                    ->color(fn (mixed $state): string => str($state)->contains('Global') ? 'gray' : 'primary')
                     ->searchable()
-                    ->visible(fn(): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled()),
+                    ->visible(fn (): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled()),
                 TextColumn::make('permissions_count')
                     ->label('Permissions')
                     ->badge()
@@ -129,7 +129,7 @@ class RoleResource extends Resource
                 ActionGroup::make([
                     EditAction::make(),
                     DeleteAction::make(),
-                ])
+                ]),
             ])
             ->toolbarActions([
                 // DeleteBulkAction::make(),
