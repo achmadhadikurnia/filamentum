@@ -236,19 +236,32 @@
                 border-radius: 9999px;
                 transition: all 0.2s ease;
                 color: var(--color-text-muted-light);
-                border: 1px solid rgba(0, 0, 0, 0.1);
+                border: 1px solid rgba(0, 0, 0, 0.15);
+                background: transparent;
             }
 
             @media (prefers-color-scheme: dark) {
                 .brand__link {
                     color: var(--color-text-muted-dark);
-                    border-color: rgba(255, 255, 255, 0.1);
+                    border-color: rgba(255, 255, 255, 0.15);
                 }
             }
 
             .brand__link:hover {
                 color: var(--color-primary);
                 border-color: var(--color-primary);
+            }
+
+            .brand__link--primary {
+                background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+                color: white !important;
+                border: none;
+                box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+            }
+
+            .brand__link--primary:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
             }
 
             .brand__link svg {
@@ -294,7 +307,7 @@
                 <h1 class="brand__title">Filamentum</h1>
                 <p class="brand__tagline">Laravel starter kit with Filament admin panel</p>
                 <div class="brand__links">
-                    <a href="https://filamentum.kanekes.com" target="_blank" rel="noopener" class="brand__link">
+                    <a href="https://filamentum.kanekes.com" target="_blank" rel="noopener" class="brand__link brand__link--primary">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"></circle>
                             <line x1="2" y1="12" x2="22" y2="12"></line>
