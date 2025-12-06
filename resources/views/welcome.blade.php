@@ -297,10 +297,11 @@
             <div class="brand">
                 <div class="brand__logo">
                     <div class="brand__icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                            <polyline points="2 17 12 22 22 17"></polyline>
-                            <polyline points="2 12 12 17 22 12"></polyline>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <!-- Diamond outline -->
+                            <path d="M12 1L1 12L12 23L23 12L12 1ZM12 4L20 12L12 20L4 12L12 4Z"/>
+                            <!-- Flame inside - larger -->
+                            <path d="M12 6L8 11C8 11 8 14 10 15.5C9 14.5 9.5 13 10.5 11.5C11.5 10 12 9 12 9C12 9 12.5 10 13.5 11.5C14.5 13 15 14.5 14 15.5C16 14 16 11 16 11L12 6Z"/>
                         </svg>
                     </div>
                 </div>
