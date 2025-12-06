@@ -30,12 +30,12 @@ class UserForm
                     ->helperText('Must be a valid email address'),
                 TextInput::make('password')
                     ->password()
-                    ->required(fn (string $operation): bool => $operation === 'create')
+                    ->required(fn(string $operation): bool => $operation === 'create')
                     ->maxLength(255)
                     ->minLength(8)
                     ->placeholder('Enter password')
                     ->helperText('Password must be at least 8 characters long')
-                    ->visible(fn (string $operation): bool => $operation === 'create'),
+                    ->visible(fn(string $operation): bool => $operation === 'create'),
                 TextInput::make('new_password')
                     ->password()
                     ->label('New Password')
@@ -43,13 +43,28 @@ class UserForm
                     ->minLength(8)
                     ->placeholder('Enter new password')
                     ->helperText('Leave blank to keep current password. Must be at least 8 characters long')
-                    ->visible(fn (string $operation): bool => $operation === 'edit'),
+                    ->visible(fn(string $operation): bool => $operation === 'edit'),
                 Select::make('roles')
                     ->multiple()
                     ->preload()
                     ->label('Roles')
                     ->helperText('Select one or more roles for this user')
-                    ->options(fn () => static::getAvailableRoles()),
+                    ->options(fn() => static::getAvailableRoles())
+                    ->rule('array')
+                    ->rule(function () {
+                        return function (string $attribute, $value, \Closure $fail) {
+                            $availableRoleIds = array_keys(static::getAvailableRoles());
+
+                            if (is_array($value)) {
+                                foreach ($value as $roleId) {
+                                    if (!in_array($roleId, $availableRoleIds)) {
+                                        $fail('The selected role is not valid or you do not have permission to assign it.');
+                                        return;
+                                    }
+                                }
+                            }
+                        };
+                    }),
             ]);
     }
 
@@ -67,7 +82,7 @@ class UserForm
 
         // If user doesn't have Super Admin role, exclude it from the options
         if (! $user || ! $user->hasRole('Super Admin')) {
-            $roles = $roles->filter(fn ($role) => $role->name !== 'Super Admin');
+            $roles = $roles->filter(fn($role) => $role->name !== 'Super Admin');
         }
 
         // Return roles as an associative array

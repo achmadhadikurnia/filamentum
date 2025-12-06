@@ -2,7 +2,6 @@
 
 namespace App\Filament\Pages\Auth;
 
-use App\Models\User;
 use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Filament\Auth\Pages\Register as BaseRegister;
 use Illuminate\Database\Eloquent\Model;
@@ -19,10 +18,13 @@ class Register extends BaseRegister
     {
         $user = parent::handleRegistration($data);
 
-        // Assign default 'User' role
-        $userRole = Role::where('name', 'User')->first();
-        if ($userRole) {
-            $user->assignRole($userRole);
+        // Assign default role from filament-shield config
+        $defaultRoleName = config('filament-shield.panel_user.name');
+        if ($defaultRoleName) {
+            $userRole = Role::where('name', $defaultRoleName)->first();
+            if ($userRole) {
+                $user->assignRole($userRole);
+            }
         }
 
         return $user;

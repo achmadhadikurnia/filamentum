@@ -19,14 +19,17 @@ class UsersTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->label('Name')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('email')
                     ->label('Email address')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 IconColumn::make('email_verified_at')
                     ->label('Verified')
                     ->boolean()
-                    ->tooltip(fn ($record) => $record->email_verified_at?->format('Y-m-d H:i:s'))
+                    ->tooltip(fn($record) => $record->email_verified_at?->format('Y-m-d H:i:s'))
                     ->sortable(),
                 TextColumn::make('roles.name')
                     ->label('Roles')
@@ -35,13 +38,13 @@ class UsersTable
                     ->limitList(1)
                     ->expandableLimitedList(),
                 TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label('Created At')
                     ->since()
                     ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label('Updated')
+                    ->label('Updated At')
                     ->since()
                     ->dateTimeTooltip()
                     ->sortable()
@@ -59,10 +62,11 @@ class UsersTable
                         ->label('Verify Email')
                         ->icon('heroicon-o-check-badge')
                         ->color('success')
-                        ->visible(fn (User $record): bool => $record->email_verified_at === null)
+                        ->visible(fn(User $record): bool => $record->email_verified_at === null)
                         ->requiresConfirmation()
                         ->action(function (User $record): void {
-                            $record->update(['email_verified_at' => now()]);
+                            $record->email_verified_at = now();
+                            $record->save();
                         }),
                 ])
                     ->icon('heroicon-o-ellipsis-vertical')

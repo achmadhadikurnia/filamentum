@@ -15,7 +15,7 @@ class ShieldSeeder extends Seeder
 
         $rolesWithPermissions = [
             [
-                'name' => 'Super Admin',
+                'name' => config('filament-shield.super_admin.name'),
                 'guard_name' => 'web',
                 'permissions' => [
                     'ViewAny:UserResource',
@@ -29,6 +29,7 @@ class ShieldSeeder extends Seeder
                     'RestoreAny:UserResource',
                     'Replicate:UserResource',
                     'Reorder:UserResource',
+
                     'ViewAny:RoleResource',
                     'View:RoleResource',
                     'Create:RoleResource',
@@ -60,7 +61,7 @@ class ShieldSeeder extends Seeder
                 ],
             ],
             [
-                'name' => 'User',
+                'name' => config('filament-shield.panel_user.name'),
                 'guard_name' => 'web',
                 'permissions' => [],
             ],
@@ -88,7 +89,7 @@ class ShieldSeeder extends Seeder
 
                 if (! blank($rolePlusPermission['permissions'])) {
                     $permissionModels = collect($rolePlusPermission['permissions'])
-                        ->map(fn ($permission) => Permission::firstOrCreate([
+                        ->map(fn($permission) => Permission::firstOrCreate([
                             'name' => $permission,
                             'guard_name' => $rolePlusPermission['guard_name'],
                         ]))

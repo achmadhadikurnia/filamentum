@@ -22,7 +22,11 @@ class RoleUserSeeder extends Seeder
      */
     private function createRoles(): void
     {
-        $roles = ['Super Admin', 'Admin', 'User'];
+        $roles = [
+            config('filament-shield.super_admin.name'),
+            'Admin',
+            config('filament-shield.panel_user.name'),
+        ];
 
         foreach ($roles as $roleName) {
             Role::firstOrCreate(['name' => $roleName]);
@@ -38,7 +42,7 @@ class RoleUserSeeder extends Seeder
             [
                 'name' => 'Super Admin User',
                 'email' => 'superadmin@filamentum.com',
-                'role' => 'Super Admin',
+                'role' => config('filament-shield.super_admin.name'),
             ],
             [
                 'name' => 'Admin User',
@@ -48,7 +52,7 @@ class RoleUserSeeder extends Seeder
             [
                 'name' => 'Regular User',
                 'email' => 'user@filamentum.com',
-                'role' => 'User',
+                'role' => config('filament-shield.panel_user.name'),
             ],
         ];
 

@@ -11,18 +11,34 @@
 
 Filamentum is a Laravel starter kit with the Filament admin panel and essential packages pre-installed.
 
+### Features
+
+#### **Application Menu**
+- [x] Dashboard
+- [x] Users management
+- [x] Roles management
+
+#### **Development Tools**
+- [x] Laravel Debugbar for debugging assistance
+- [x] Laravel Telescope for monitoring and debugging
+
+#### **Deployment Tools**
+- [x] Laravel Sail for containerized development
+- [x] Laravel Octane for high-performance serving
 
 ## Installation
 
 You can install Filamentum in two ways:
 
-### 1. Via Laravel Installer
+### 1. Via Laravel Installer *(Recommended)*
 
 Create a new project using Laravel installer with Filamentum as the starter kit:
 
 ```bash
 laravel new my-app --using=kanekescom/filamentum
 ```
+
+> **Note:** For more information about Laravel Installer, please refer to the [official Laravel Installer documentation](https://laravel.com/docs/12.x/installation#the-laravel-installer).
 
 ### 2. Via Composer
 
@@ -38,15 +54,22 @@ b. Clone from GitHub:
 git clone https://github.com/kanekescom/filamentum.git my-app
 cd my-app
 composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
 ```
 
 After installation, your application will be ready with all the essential packages and configurations set up.
+
+### Configuration File
+
+These settings are defined in `config/filamentum.php`.
 
 ## Creating Users
 
 To access the Filament admin panel, you'll need to create user accounts. The recommended approach is to use database seeding which creates predefined users with specific roles.
 
-### Database Seeding (Recommended)
+### Database Seeding *(Recommended)*
 
 Run the following command to create default users with predefined roles:
 
@@ -57,9 +80,9 @@ php artisan db:seed
 This command creates a complete user management system with:
 
 1. **Three predefined roles**:
-   - Super Admin (full access to all features)
-   - Admin (access to some admin features)
-   - User (basic access)
+   - Super Admin (can access Dashboard, Users, and Roles)
+   - Admin (can access Dashboard and Users)
+   - User (can only access Dashboard)
 
 2. **Three corresponding users** with the following credentials:
 
@@ -113,39 +136,19 @@ FILAMENTUM_PROFILE=true
 - `FILAMENTUM_EMAIL_CHANGE_VERIFICATION`: Enable or disable email change verification (default: false)
 - `FILAMENTUM_PROFILE`: Enable or disable user profile management (default: true)
 
-### Configuration File
+## Laravel Sail
 
-These settings are defined in `config/filamentum.php`.
+This project comes with Laravel Sail pre-installed for Docker-based development environments. To get started with Sail, you'll need to have Docker installed on your system.
 
-## AI Coding Assistance
-
-For developers using AI coding assistants, run the following command to install the MCP server and coding guidelines:
+After installing Docker, you can start the Sail environment with:
 
 ```bash
-php artisan boost:install
+./vendor/bin/sail up
 ```
 
-This will set up the Model Context Protocol (MCP) server and configure coding guidelines that enhance your AI-assisted development experience.
+Once the containers are up, you can access your application in your web browser at http://localhost.
 
-### Keeping Guidelines Up-to-Date
-
-You may want to periodically update your local AI guidelines to ensure they reflect the latest versions of the Laravel ecosystem packages you have installed. To do so, you can use the boost:update Artisan command:
-
-```bash
-php artisan boost:update
-```
-
-You may also automate this process by adding it to your Composer "post-update-cmd" scripts:
-
-```json
-{
-  "scripts": {
-    "post-update-cmd": [
-      "@php artisan boost:update --ansi"
-    ]
-  }
-}
-```
+For more information about Laravel Sail configuration and usage, please refer to the [official Laravel Sail documentation](https://laravel.com/docs/12.x/sail).
 
 ## Laravel Octane
 
@@ -163,9 +166,21 @@ After installation, you can start your application using Octane with:
 php artisan octane:start
 ```
 
-For more information about Laravel Octane configuration and usage, please refer to the [official Laravel Octane documentation](https://laravel.com/docs/12.x/octane).
+> **Note:** For more information about Laravel Octane configuration and usage, please refer to the [official Laravel Octane documentation](https://laravel.com/docs/12.x/octane).
 
 ## Running Tests
+
+### PHPUnit Configuration
+
+Before running tests, copy the PHPUnit configuration template:
+
+```bash
+cp phpunit.xml.dist phpunit.xml
+```
+
+The `phpunit.xml` file is gitignored, allowing you to add custom environment variables (such as API credentials) without committing them to the repository.
+
+### Running the Test Suite
 
 You can run the test suite using Composer:
 
@@ -187,18 +202,12 @@ Filamentum comes with several pre-installed packages to help you build your appl
 
 - [laravel/framework](https://github.com/laravel/framework) v12 - The core Laravel framework
 - [laravel/octane](https://github.com/laravel/octane) v2 - High-performance Laravel application server
-- [laravel/boost](https://github.com/laravel/boost) v1 - AI-assisted Laravel development experience
 - [laravel/sail](https://github.com/laravel/sail) v1 - Docker setup for Laravel applications
 - [laravel/telescope](https://github.com/laravel/telescope) v5 - Debug assistant for Laravel
 - [filament/filament](https://github.com/filamentphp/filament) v4 - Admin panel & app UI framework
 - [bezhansalleh/filament-shield](https://github.com/bezhanSalleh/filament-shield) v4 - Role & permission management
-- [spatie/laravel-activitylog](https://github.com/spatie/laravel-activitylog) v4 - Activity logging for Laravel
-- [spatie/laravel-backup](https://github.com/spatie/laravel-backup) v9 - Application & database backup tool
 - [spatie/laravel-permission](https://github.com/spatie/laravel-permission) v6 - Roles and permissions management
-- [spatie/laravel-query-builder](https://github.com/spatie/laravel-query-builder) v6 - Build Eloquent queries from API requests
-- [pestphp/pest](https://github.com/pestphp/pest) v4 - Elegant PHP testing framework
 - [barryvdh/laravel-debugbar](https://github.com/barryvdh/laravel-debugbar) v3 - Debug bar for Laravel
-- [barryvdh/laravel-ide-helper](https://github.com/barryvdh/laravel-ide-helper) v3 - IDE helper files for Laravel
 
 ## Recommended Additional Packages
 
@@ -209,7 +218,7 @@ To further enhance your Laravel application, consider adding these recommended p
 - [laravel/passport](https://github.com/laravel/passport) - OAuth2 server for API authentication
 - [laravel/sanctum](https://github.com/laravel/sanctum) - Authentication for SPAs and APIs
 - [laravel/socialite](https://github.com/laravel/socialite) - OAuth authentication with social networks
-- [sentry/sentry-laravel](https://github.com/getsentry/sentry-laravel) - Error tracking and monitoring
+- [barryvdh/laravel-ide-helper](https://github.com/barryvdh/laravel-ide-helper) v3 - IDE helper files for Laravel
 
 Refer to each package's documentation for specific installation and configuration instructions.
 
