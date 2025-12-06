@@ -218,7 +218,7 @@
         </style>
     </head>
     <body>
-        @if (Route::has('filament.app.auth.login'))
+        @if (filament()->hasLogin())
             <header class="header">
                 <nav class="nav">
                     @auth
