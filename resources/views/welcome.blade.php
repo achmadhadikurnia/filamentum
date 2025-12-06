@@ -218,20 +218,20 @@
         </style>
     </head>
     <body>
-        @if (Route::has('login'))
+        @if (Route::has('filament.app.auth.login'))
             <header class="header">
                 <nav class="nav">
                     @auth
-                        <a href="{{ url('/admin') }}" class="nav-link nav-link--primary">
+                        <a href="{{ filament()->getUrl() }}" class="nav-link nav-link--primary">
                             Dashboard
                         </a>
                     @else
-                        <a href="{{ route('login') }}" class="nav-link">
+                        <a href="{{ filament()->getLoginUrl() }}" class="nav-link">
                             Log in
                         </a>
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="nav-link nav-link--primary">
+                        @if (filament()->hasRegistration())
+                            <a href="{{ filament()->getRegistrationUrl() }}" class="nav-link nav-link--primary">
                                 Register
                             </a>
                         @endif
