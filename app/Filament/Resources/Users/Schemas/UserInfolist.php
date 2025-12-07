@@ -17,7 +17,7 @@ class UserInfolist
                 TextEntry::make('email_verified_at')
                     ->label('Email Verified')
                     ->since()
-                    ->tooltip(fn ($record) => $record->email_verified_at?->format('Y-m-d H:i:s'))
+                    ->tooltip(fn($record) => $record->email_verified_at?->format('Y-m-d H:i:s'))
                     ->placeholder('-'),
                 TextEntry::make('roles.name')
                     ->label('Roles')
@@ -26,12 +26,12 @@ class UserInfolist
                     ->limitList(1)
                     ->expandableLimitedList(),
                 TextEntry::make('created_at')
-                    ->label('Created')
+                    ->label('Created At')
                     ->since()
                     ->dateTimeTooltip()
                     ->placeholder('-'),
                 TextEntry::make('updated_at')
-                    ->label('Updated')
+                    ->label('Updated At')
                     ->since()
                     ->dateTimeTooltip()
                     ->placeholder('-'),
