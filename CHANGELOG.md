@@ -1,5 +1,13 @@
 # Release Notes
 
+## v0.0.4 - 2025-12-07
+
+### What's Changed
+
+* feat: add copyright info by @achmadhadikurnia in https://github.com/kanekescom/filamentum/pull/3
+
+**Full Changelog**: https://github.com/kanekescom/filamentum/compare/v0.0.3...v0.0.4
+
 ## v0.0.3 - 2025-12-06
 
 ### What's Changed
