@@ -26,17 +26,18 @@ class UsersTable
                     ->label('Email address')
                     ->searchable()
                     ->sortable(),
-                IconColumn::make('email_verified_at')
-                    ->label('Verified')
-                    ->boolean()
-                    ->tooltip(fn($record) => $record->email_verified_at?->format('Y-m-d H:i:s'))
-                    ->sortable(),
                 TextColumn::make('roles.name')
                     ->label('Roles')
                     ->badge()
                     ->listWithLineBreaks()
                     ->limitList(1)
                     ->expandableLimitedList(),
+                IconColumn::make('email_verified_at')
+                    ->label('Verified')
+                    ->boolean()
+                    ->tooltip(fn($record) => $record->email_verified_at?->format('Y-m-d H:i:s'))
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label('Created')
                     ->since()
