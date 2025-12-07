@@ -334,6 +334,9 @@
             <p class="footer__text">
                 Built with <a href="https://laravel.com" target="_blank" rel="noopener" class="footer__link">Laravel</a> & <a href="https://filamentphp.com" target="_blank" rel="noopener" class="footer__link">Filament</a>
             </p>
+            <p class="footer__text" style="margin-top: 0.5rem;">
+                © 2024 <a href="https://kanekes.com" target="_blank" rel="noopener" class="footer__link">Kanekes</a>. Released under MIT License.
+            </p>
         </footer>
     </body>
 </html>
