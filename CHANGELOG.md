@@ -1,5 +1,14 @@
 # Release Notes
 
+## v0.0.5 - 2025-12-07
+
+### What's Changed
+
+* feat:  add funding configuration. by @achmadhadikurnia in https://github.com/kanekescom/filamentum/pull/4
+* feat: rename label field by @achmadhadikurnia in https://github.com/kanekescom/filamentum/pull/5
+
+**Full Changelog**: https://github.com/kanekescom/filamentum/compare/v0.0.4...v0.0.5
+
 ## v0.0.4 - 2025-12-07
 
 ### What's Changed

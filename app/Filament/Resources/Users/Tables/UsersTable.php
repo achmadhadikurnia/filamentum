@@ -21,17 +21,23 @@ class UsersTable
                 TextColumn::make('name')
                     ->label('Name')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->wrap()
+                    ->copyable(),
                 TextColumn::make('email')
                     ->label('Email address')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->wrap()
+                    ->copyable(),
                 TextColumn::make('roles.name')
                     ->label('Roles')
                     ->badge()
                     ->listWithLineBreaks()
                     ->limitList(1)
-                    ->expandableLimitedList(),
+                    ->expandableLimitedList()
+                    ->wrap()
+                    ->copyable(),
                 IconColumn::make('email_verified_at')
                     ->label('Verified')
                     ->boolean()
@@ -43,12 +49,16 @@ class UsersTable
                     ->since()
                     ->dateTimeTooltip()
                     ->sortable()
+                    ->wrap()
+                    ->copyable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->label('Updated')
                     ->since()
                     ->dateTimeTooltip()
                     ->sortable()
+                    ->wrap()
+                    ->copyable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
