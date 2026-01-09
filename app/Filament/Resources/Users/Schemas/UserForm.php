@@ -17,38 +17,38 @@ class UserForm
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255)
-                    ->label('Full Name')
-                    ->placeholder('Enter user\'s full name')
-                    ->helperText('The user\'s full name'),
+                    ->label(__('Full Name'))
+                    ->placeholder(__('Enter user\'s full name'))
+                    ->helperText(__('The user\'s full name')),
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label(__('Email address'))
                     ->email()
                     ->required()
                     ->maxLength(255)
                     ->unique(ignoreRecord: true)
-                    ->placeholder('Enter user\'s email address')
-                    ->helperText('Must be a valid email address'),
+                    ->placeholder(__('Enter user\'s email address'))
+                    ->helperText(__('Must be a valid email address')),
                 TextInput::make('password')
                     ->password()
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->maxLength(255)
                     ->minLength(8)
-                    ->placeholder('Enter password')
-                    ->helperText('Password must be at least 8 characters long')
+                    ->placeholder(__('Enter password'))
+                    ->helperText(__('Password must be at least 8 characters long'))
                     ->visible(fn (string $operation): bool => $operation === 'create'),
                 TextInput::make('new_password')
                     ->password()
-                    ->label('New Password')
+                    ->label(__('New Password'))
                     ->maxLength(255)
                     ->minLength(8)
-                    ->placeholder('Enter new password')
-                    ->helperText('Leave blank to keep current password. Must be at least 8 characters long')
+                    ->placeholder(__('Enter new password'))
+                    ->helperText(__('Leave blank to keep current password. Must be at least 8 characters long'))
                     ->visible(fn (string $operation): bool => $operation === 'edit'),
                 Select::make('roles')
                     ->multiple()
                     ->preload()
-                    ->label('Roles')
-                    ->helperText('Select one or more roles for this user')
+                    ->label(__('Roles'))
+                    ->helperText(__('Select one or more roles for this user'))
                     ->options(fn () => static::getAvailableRoles())
                     ->rule('array')
                     ->rule(function () {
@@ -58,7 +58,7 @@ class UserForm
                             if (is_array($value)) {
                                 foreach ($value as $roleId) {
                                     if (! in_array($roleId, $availableRoleIds)) {
-                                        $fail('The selected role is not valid or you do not have permission to assign it.');
+                                        $fail(__('The selected role is not valid or you do not have permission to assign it.'));
 
                                         return;
                                     }

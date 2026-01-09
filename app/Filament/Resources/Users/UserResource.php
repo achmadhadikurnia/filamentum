@@ -26,8 +26,6 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
 
-    protected static ?int $navigationSort = 8;
-
     public static function form(Schema $schema): Schema
     {
         return UserForm::configure($schema);
@@ -48,6 +46,16 @@ class UserResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Users');
+    }
+
+    public static function getNavigationSort(): ?int
+    {
+        return 1;
     }
 
     public static function getPages(): array

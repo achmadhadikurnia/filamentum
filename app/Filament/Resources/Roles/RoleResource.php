@@ -48,28 +48,28 @@ class RoleResource extends Resource
                         Section::make()
                             ->schema([
                                 TextInput::make('name')
-                                    ->label('Name')
+                                    ->label(__('Name'))
                                     ->unique(
                                         ignoreRecord: true,
                                         /** @phpstan-ignore-next-line */
-                                        modifyRuleUsing: fn(Unique $rule): Unique => Utils::isTenancyEnabled() ? $rule->where(Utils::getTenantModelForeignKey(), Filament::getTenant()?->id) : $rule
+                                        modifyRuleUsing: fn (Unique $rule): Unique => Utils::isTenancyEnabled() ? $rule->where(Utils::getTenantModelForeignKey(), Filament::getTenant()?->id) : $rule
                                     )
                                     ->required()
                                     ->maxLength(255),
 
                                 TextInput::make('guard_name')
-                                    ->label('Guard Name')
+                                    ->label(__('Guard Name'))
                                     ->default(Utils::getFilamentAuthGuard())
                                     ->nullable()
                                     ->maxLength(255),
 
                                 Select::make(config('permission.column_names.team_foreign_key'))
-                                    ->label('Team')
+                                    ->label(__('Team'))
                                     /** @phpstan-ignore-next-line */
                                     ->default(Filament::getTenant()?->id)
-                                    ->options(fn(): array => in_array(Utils::getTenantModel(), [null, '', '0'], true) ? [] : Utils::getTenantModel()::pluck('name', 'id')->toArray())
-                                    ->visible(fn(): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled())
-                                    ->dehydrated(fn(): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled()),
+                                    ->options(fn (): array => in_array(Utils::getTenantModel(), [null, '', '0'], true) ? [] : Utils::getTenantModel()::pluck('name', 'id')->toArray())
+                                    ->visible(fn (): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled())
+                                    ->dehydrated(fn (): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled()),
                                 static::getSelectAllFormComponent(),
 
                             ])
@@ -89,37 +89,49 @@ class RoleResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Name')
+                    ->label(__('Name'))
                     ->weight(FontWeight::Medium)
-                    ->formatStateUsing(fn(string $state): string => Str::headline($state))
-                    ->searchable(),
+                    ->formatStateUsing(fn (string $state): string => Str::headline($state))
+                    ->searchable()
+                    ->wrap()
+                    ->copyable(),
                 TextColumn::make('guard_name')
-                    ->label('Guard Name')
+                    ->label(__('Guard Name'))
                     ->badge()
-                    ->color('warning'),
+                    ->color('warning')
+                    ->wrap()
+                    ->copyable(),
                 TextColumn::make('team.name')
-                    ->label('Team')
+                    ->label(__('Team'))
                     ->default('Global')
                     ->badge()
-                    ->color(fn(mixed $state): string => str($state)->contains('Global') ? 'gray' : 'primary')
+                    ->color(fn (mixed $state): string => str($state)->contains('Global') ? 'gray' : 'primary')
                     ->searchable()
-                    ->visible(fn(): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled()),
+                    ->wrap()
+                    ->copyable()
+                    ->visible(fn (): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled()),
                 TextColumn::make('permissions_count')
-                    ->label('Permissions')
+                    ->label(__('Permissions'))
                     ->badge()
                     ->counts('permissions')
-                    ->color('primary'),
+                    ->color('primary')
+                    ->wrap()
+                    ->copyable(),
                 TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label(__('Created'))
                     ->since()
                     ->dateTimeTooltip()
                     ->sortable()
+                    ->wrap()
+                    ->copyable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label('Updated')
+                    ->label(__('Updated'))
                     ->since()
                     ->dateTimeTooltip()
                     ->sortable()
+                    ->wrap()
+                    ->copyable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -141,6 +153,16 @@ class RoleResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Users');
+    }
+
+    public static function getNavigationSort(): ?int
+    {
+        return 2;
     }
 
     public static function getPages(): array
