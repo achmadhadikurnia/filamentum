@@ -1,5 +1,14 @@
 # Release Notes
 
+## v0.0.6 - 2026-01-09
+
+### What's Changed
+
+* Reforder field by @achmadhadikurnia in https://github.com/kanekescom/filamentum/pull/6
+* refactor: use config-based settings for AppPanelProvider by @achmadhadikurnia in https://github.com/kanekescom/filamentum/pull/7
+
+**Full Changelog**: https://github.com/kanekescom/filamentum/compare/v0.0.5...v0.0.6
+
 ## v0.0.5 - 2025-12-07
 
 ### What's Changed
