@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -59,5 +60,39 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         // Allow all users to access the admin panel in local environment
         // In production, you might want to add additional checks
         return true;
+    }
+
+    /**
+     * Determine if the user has verified their email address.
+     * If email verification is disabled, always return true.
+     */
+    public function hasVerifiedEmail(): bool
+    {
+        if (! $this->isEmailVerificationEnabled()) {
+            return true;
+        }
+
+        return ! is_null($this->email_verified_at);
+    }
+
+    /**
+     * Send the email verification notification.
+     * Only sends if email verification is enabled.
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        if (! $this->isEmailVerificationEnabled()) {
+            return;
+        }
+
+        $this->notify(new VerifyEmail);
+    }
+
+    /**
+     * Check if email verification feature is enabled.
+     */
+    protected function isEmailVerificationEnabled(): bool
+    {
+        return config('filamentum.features.email_verification', false);
     }
 }
