@@ -1,0 +1,26 @@
+# Prevent execution of scripts in the storage directory.
+# This is a security measure to prevent uploaded files from being executed.
+
+# Disable script execution
+<FilesMatch "\.(php|phtml|php3|php4|php5|phps|phar|pl|py|cgi|asp|aspx|shtml|sh|bash|bat|cmd|com|htaccess|htpasswd|ini|log|sql|conf|env)$">
+    Require all denied
+</FilesMatch>
+
+# Disable PHP engine entirely
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+
+# Force download for potentially dangerous file types
+<FilesMatch "\.(html|htm|xhtml|svg)$">
+    Header set Content-Disposition "attachment"
+    Header set X-Content-Type-Options "nosniff"
+</FilesMatch>
+
+# Ensure all files are served with correct content-type headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# Disable directory listing
+Options -Indexes -ExecCGI
