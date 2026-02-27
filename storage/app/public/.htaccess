@@ -2,7 +2,7 @@
 # This is a security measure to prevent uploaded files from being executed.
 
 # Disable script execution
-<FilesMatch "\.(php|phtml|php3|php4|php5|phps|phar|pl|py|cgi|asp|aspx|shtml|sh|bash|bat|cmd|com|htaccess|htpasswd|ini|log|sql|conf|env)$">
+<FilesMatch "\.(php|phtml|php3|php4|php5|phps|phar|pl|py|cgi|asp|aspx|jsp|jspx|shtml|sh|bash|bat|cmd|com|htaccess|htpasswd|ini|log|sql|conf|env)$">
     Require all denied
 </FilesMatch>
 
