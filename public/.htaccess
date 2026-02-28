@@ -23,3 +23,27 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# Hide server information
+ServerSignature Off
+
+# Remove server version disclosure
+<IfModule mod_headers.c>
+    Header always unset X-Powered-By
+    Header always unset Server
+</IfModule>
+
+# Prevent access to hidden/dot files (.env, .git, etc.)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Prevent access to sensitive file types
+<FilesMatch "\.(env|log|sql|bak|old|tmp|dist|save|swp)$">
+    Require all denied
+</FilesMatch>
+
+# Prevent access to common config/build files
+<FilesMatch "(composer\.(json|lock)|package(-lock)?\.json|webpack\.mix\.js|artisan|yarn\.lock|\.editorconfig|\.gitignore|\.gitattributes)$">
+    Require all denied
+</FilesMatch>

@@ -1,26 +1,47 @@
 # Prevent execution of scripts in the storage directory.
 # This is a security measure to prevent uploaded files from being executed.
 
-# Disable script execution
-<FilesMatch "\.(php|phtml|php3|php4|php5|phps|phar|pl|py|cgi|asp|aspx|jsp|jspx|shtml|sh|bash|bat|cmd|com|htaccess|htpasswd|ini|log|sql|conf|env)$">
-    Require all denied
-</FilesMatch>
+# Disable directory listing and CGI execution
+Options -Indexes -ExecCGI
 
-# Disable PHP engine entirely
+# Disable PHP engine entirely (mod_php)
 <IfModule mod_php.c>
     php_flag engine off
 </IfModule>
 
-# Force download for potentially dangerous file types
-<FilesMatch "\.(html|htm|xhtml|svg)$">
+# Deny access to script files (blacklist)
+<FilesMatch "\.(php|phtml|php3|php4|php5|php7|phps|phar|pht|pl|py|cgi|asp|aspx|jsp|jspx|shtml|sh|bash|bat|cmd|com|htaccess|htpasswd|ini|log|sql|conf|env|module)$">
+    Require all denied
+</FilesMatch>
+
+# Remove PHP handlers for all PHP-like files (covers php-fpm/FastCGI)
+<FilesMatch ".+\.ph(ar|p|tml|ps|t|p[345s7]?)$">
+    SetHandler !
+    ForceType text/plain
+</FilesMatch>
+
+# Deny double extensions (e.g., malware.php.jpg)
+<FilesMatch ".+\.ph(ar|p|tml|ps|t|p[345s7]?)\..+$">
+    Require all denied
+</FilesMatch>
+
+# Deny access to hidden/dot files (e.g., .env, .git)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Force download for potentially dangerous file types (prevent XSS via HTML/SVG)
+<FilesMatch "\.(html|htm|xhtml|svg|xml)$">
     Header set Content-Disposition "attachment"
     Header set X-Content-Type-Options "nosniff"
 </FilesMatch>
 
-# Ensure all files are served with correct content-type headers
+# Prevent MIME type sniffing for all files
 <IfModule mod_headers.c>
     Header set X-Content-Type-Options "nosniff"
 </IfModule>
 
-# Disable directory listing
-Options -Indexes -ExecCGI
+# Limit HTTP methods - only allow GET and HEAD for static file serving
+<LimitExcept GET HEAD>
+    Require all denied
+</LimitExcept>

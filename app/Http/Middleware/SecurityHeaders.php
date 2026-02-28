@@ -14,11 +14,26 @@ class SecurityHeaders
      * @var array<string, string>
      */
     protected array $headers = [
+        // HTTPS enforcement (1 year + subdomains)
         'Strict-Transport-Security' => 'max-age=31536000; includeSubDomains',
+
+        // Prevent clickjacking - only allow same-origin framing
         'X-Frame-Options' => 'SAMEORIGIN',
+
+        // Prevent MIME type sniffing
         'X-Content-Type-Options' => 'nosniff',
+
+        // Control referrer information sent to external sites
         'Referrer-Policy' => 'strict-origin-when-cross-origin',
+
+        // Restrict browser features/APIs
         'Permissions-Policy' => 'camera=(), microphone=(), geolocation=(), payment=()',
+
+        // Isolate browsing context from cross-origin popups
+        'Cross-Origin-Opener-Policy' => 'same-origin',
+
+        // Prevent other sites from embedding our resources
+        'Cross-Origin-Resource-Policy' => 'same-origin',
     ];
 
     /**
@@ -35,6 +50,7 @@ class SecurityHeaders
 
         // Remove headers that leak server information
         $response->headers->remove('X-Powered-By');
+        $response->headers->remove('Server');
 
         return $response;
     }
