@@ -1,47 +1,63 @@
 # Prevent execution of scripts in the storage directory.
-# This is a security measure to prevent uploaded files from being executed.
+# Compatible with Apache 2.2+, Apache 2.4+, LiteSpeed, and OpenLiteSpeed.
 
-# Disable directory listing and CGI execution
-Options -Indexes -ExecCGI
-
-# Disable PHP engine entirely (mod_php)
-<IfModule mod_php.c>
-    php_flag engine off
+# Disable directory listing (wrapped in IfModule for safety)
+<IfModule mod_autoindex.c>
+    Options -Indexes
 </IfModule>
 
-# Deny access to script files (blacklist)
-<FilesMatch "\.(php|phtml|php3|php4|php5|php7|phps|phar|pht|pl|py|cgi|asp|aspx|jsp|jspx|shtml|sh|bash|bat|cmd|com|htaccess|htpasswd|ini|log|sql|conf|env|module)$">
-    Require all denied
-</FilesMatch>
-
-# Remove PHP handlers for all PHP-like files (covers php-fpm/FastCGI)
-<FilesMatch ".+\.ph(ar|p|tml|ps|t|p[345s7]?)$">
-    SetHandler !
-    ForceType text/plain
+# Force PHP files to be served as plain text (prevent execution)
+<FilesMatch "\.ph(ar|p|tml|ps|t|p[345s7]?)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
 </FilesMatch>
 
 # Deny double extensions (e.g., malware.php.jpg)
-<FilesMatch ".+\.ph(ar|p|tml|ps|t|p[345s7]?)\..+$">
-    Require all denied
+<FilesMatch "\.ph(ar|p|tml|ps|t|p[345s7]?)\..+$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Deny access to dangerous/script file extensions
+<FilesMatch "\.(cgi|pl|py|rb|asp|aspx|jsp|jspx|sh|bash|bat|cmd|com|exe|msi|scr|ps1|vbs|js|htaccess|htpasswd|ini|log|sql|conf|env|config)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
 </FilesMatch>
 
 # Deny access to hidden/dot files (e.g., .env, .git)
 <FilesMatch "^\.">
-    Require all denied
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
 </FilesMatch>
 
 # Force download for potentially dangerous file types (prevent XSS via HTML/SVG)
-<FilesMatch "\.(html|htm|xhtml|svg|xml)$">
-    Header set Content-Disposition "attachment"
-    Header set X-Content-Type-Options "nosniff"
-</FilesMatch>
+<IfModule mod_headers.c>
+    <FilesMatch "\.(html|htm|xhtml|shtml|svg|xml)$">
+        Header set Content-Disposition "attachment"
+    </FilesMatch>
+</IfModule>
 
 # Prevent MIME type sniffing for all files
 <IfModule mod_headers.c>
     Header set X-Content-Type-Options "nosniff"
 </IfModule>
-
-# Limit HTTP methods - only allow GET and HEAD for static file serving
-<LimitExcept GET HEAD>
-    Require all denied
-</LimitExcept>
