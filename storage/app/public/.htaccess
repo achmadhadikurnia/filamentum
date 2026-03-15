@@ -1,0 +1,63 @@
+# Prevent execution of scripts in the storage directory.
+# Compatible with Apache 2.2+, Apache 2.4+, LiteSpeed, and OpenLiteSpeed.
+
+# Disable directory listing (wrapped in IfModule for safety)
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
+
+# Force PHP files to be served as plain text (prevent execution)
+<FilesMatch "\.ph(ar|p|tml|ps|t|p[345s7]?)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Deny double extensions (e.g., malware.php.jpg)
+<FilesMatch "\.ph(ar|p|tml|ps|t|p[345s7]?)\..+$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Deny access to dangerous/script file extensions
+<FilesMatch "\.(cgi|pl|py|rb|asp|aspx|jsp|jspx|sh|bash|bat|cmd|com|exe|msi|scr|ps1|vbs|js|htaccess|htpasswd|ini|log|sql|conf|env|config)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Deny access to hidden/dot files (e.g., .env, .git)
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Force download for potentially dangerous file types (prevent XSS via HTML/SVG)
+<IfModule mod_headers.c>
+    <FilesMatch "\.(html|htm|xhtml|shtml|svg|xml)$">
+        Header set Content-Disposition "attachment"
+    </FilesMatch>
+</IfModule>
+
+# Prevent MIME type sniffing for all files
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>

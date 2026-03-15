@@ -23,3 +23,47 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# Hide server information
+<IfModule mod_autoindex.c>
+    ServerSignature Off
+</IfModule>
+
+# Remove server version disclosure
+<IfModule mod_headers.c>
+    Header always unset X-Powered-By
+    Header always unset Server
+</IfModule>
+
+# Prevent access to hidden/dot files (.env, .git, etc.)
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Prevent access to sensitive file types
+<FilesMatch "\.(env|log|sql|bak|old|tmp|dist|save|swp)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Prevent access to common config/build files
+<FilesMatch "(composer\.(json|lock)|package(-lock)?\.json|webpack\.mix\.js|artisan|yarn\.lock|\.editorconfig|\.gitignore|\.gitattributes)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
