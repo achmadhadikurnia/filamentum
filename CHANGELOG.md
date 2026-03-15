@@ -1,5 +1,13 @@
 # Release Notes
 
+## v0.0.7 - 2026-03-15
+
+### What's Changed
+
+* security: add improvement on csv and htaccess by @achmadhadikurnia in https://github.com/kanekescom/filamentum/pull/8
+
+**Full Changelog**: https://github.com/kanekescom/filamentum/compare/v0.0.6...v0.0.7
+
 ## v0.0.6 - 2026-01-09
 
 ### What's Changed
