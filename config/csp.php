@@ -1,5 +1,8 @@
 <?php
 
+use App\Support\Csp\FilamentumCspPreset;
+use Spatie\Csp\Nonce\RandomString;
+
 return [
 
     /*
@@ -13,7 +16,7 @@ return [
     */
 
     'presets' => [
-        App\Support\Csp\FilamentumCspPreset::class,
+        FilamentumCspPreset::class,
     ],
 
     /*
@@ -96,7 +99,7 @@ return [
     |
     */
 
-    'nonce_generator' => Spatie\Csp\Nonce\RandomString::class,
+    'nonce_generator' => RandomString::class,
 
     /*
     |--------------------------------------------------------------------------
